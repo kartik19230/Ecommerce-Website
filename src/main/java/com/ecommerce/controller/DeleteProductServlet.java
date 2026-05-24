@@ -11,19 +11,25 @@ import javax.servlet.http.HttpServletResponse;
 import com.ecommerce.dao.ProductDao;
 
 @WebServlet("/deleteProduct")
-public class DeleteProductServlet extends HttpServlet{
+public class DeleteProductServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-		int id = Integer.parseInt(req.getParameter("id"));
-		
-		ProductDao dao = new ProductDao();
-		
-		boolean result = dao.deleteProduct(id);
-		
-		dao.deleteProduct(id);
-		
+		String idStr = req.getParameter("id");
+
+		if (idStr != null) {
+
+			int id = Integer.parseInt(idStr);
+
+			ProductDao dao = new ProductDao();
+
+			boolean result = dao.deleteProduct(id);
+
+			dao.deleteProduct(id);
+
+		}
+
 		resp.sendRedirect("dashboard");
 	}
 }

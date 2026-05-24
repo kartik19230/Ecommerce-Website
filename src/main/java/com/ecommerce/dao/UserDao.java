@@ -30,6 +30,42 @@ public class UserDao {
 		}
 	}
 	
+	public boolean findEmail(String email) {
+		
+		EntityManager em = null;
+		
+		try {
+			em = HibernateUtil.getEMF().createEntityManager();
+			
+			String hql =
+					"SELECT COUNT(u) FROM Users u WHERE u.email = :email";
+
+			TypedQuery<Long> query =
+					em.createQuery(hql,Long.class);
+
+			query.setParameter("email", email);
+			
+			Long count = query.getSingleResult();
+			
+			return count > 0;
+			
+		} catch (NoResultException e) {
+
+			return false;
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			return false;
+
+		} finally {
+
+			if(em != null) {
+				em.close();
+			}
+		}
+	}
+	
 	public Users login(String email, String password) {
 		
 		System.out.println("Login DAO Called");
