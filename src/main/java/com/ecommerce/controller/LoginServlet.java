@@ -30,7 +30,7 @@ public class LoginServlet extends HttpServlet{
 				HttpSession session = req.getSession();
 				session.setAttribute("user", user);
 				
-				resp.sendRedirect("dashboard.jsp");
+				resp.sendRedirect("dashboard");
 			}else {
 				
 				resp.getWriter().print("Invalid Email or Password");

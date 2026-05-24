@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebFilter("/dashboard.jsp")
+@WebFilter("/dashboard")
 public class AuthFilter implements Filter{
 
 	@Override
