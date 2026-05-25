@@ -8,7 +8,7 @@ pageEncoding="UTF-8"%>
 <head>
 <meta charset="UTF-8">
 <title>Update Product</title>
-<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 
   *, *::before, *::after {
@@ -18,82 +18,121 @@ pageEncoding="UTF-8"%>
   }
 
   body {
-    font-family: 'Rajdhani', sans-serif;
-    background: #040810;
+    font-family: 'Inter', sans-serif;
+    background: #f1f3f6;
     min-height: 100vh;
+    padding: 0;
+  }
+
+  /* ── Top Nav ──────────────────────────── */
+
+  .topbar {
+    background: #2874f0;
+    padding: 0 2rem;
+    height: 56px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    background-image:
-      linear-gradient(rgba(0,240,255,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,240,255,0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
+    justify-content: space-between;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
   }
+
+  .topbar-logo {
+    font-size: 20px;
+    font-weight: 700;
+    font-style: italic;
+    color: #fff;
+    text-decoration: none;
+    letter-spacing: -0.5px;
+  }
+
+  .topbar-logo span { color: #ffe500; }
+
+  .topbar-back {
+    color: #fff;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.45);
+    padding: 6px 14px;
+    border-radius: 3px;
+    transition: background 0.15s;
+  }
+
+  .topbar-back:hover {
+    background: rgba(255,255,255,0.12);
+  }
+
+  /* ── Page Wrapper ─────────────────────── */
+
+  .page-wrap {
+    max-width: 560px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+
+  /* ── Breadcrumb ───────────────────────── */
+
+  .breadcrumb {
+    font-size: 12px;
+    color: #9e9e9e;
+    margin-bottom: 1rem;
+  }
+
+  .breadcrumb a {
+    color: #2874f0;
+    text-decoration: none;
+  }
+
+  .breadcrumb a:hover { text-decoration: underline; }
 
   /* ── Card ─────────────────────────────── */
 
   .container {
-    width: 100%;
-    max-width: 440px;
-    background: #0d1929;
-    border: 1px solid rgba(127,119,221,0.3);
-    border-radius: 12px;
-    padding: 2.2rem 2rem 1.8rem;
-    position: relative;
-    overflow: hidden;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 2rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
   }
 
-  /* purple-led top bar to distinguish from Add (cyan) */
-  .container::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, #7f77dd, #00f0ff, #7f77dd);
+  /* ── Heading + ID Badge ───────────────── */
+
+  .heading-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 4px;
   }
 
-  /* ── Edit Icon ────────────────────────── */
-
-  .edit-icon {
-    text-align: center;
-    font-size: 24px;
-    color: rgba(127,119,221,0.35);
-    margin-bottom: 1rem;
+  .page-heading {
+    font-size: 20px;
+    font-weight: 700;
+    color: #212121;
   }
-
-  /* ── Heading ──────────────────────────── */
-
-  .fx-heading {
-    text-align: center;
-    margin-bottom: 1.4rem;
-  }
-
-  h2 {
-    font-size: 22px;
-    font-weight: 600;
-    color: #afa9ec;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-  }
-
-  .fx-heading p {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 11px;
-    color: rgba(175,169,236,0.4);
-    letter-spacing: 2px;
-    margin-top: 6px;
-  }
-
-  /* ── Record ID Badge ──────────────────── */
 
   .id-badge {
-    font-family: 'Share Tech Mono', monospace;
     font-size: 11px;
-    color: rgba(127,119,221,0.5);
-    text-align: center;
-    margin-bottom: 1.4rem;
-    letter-spacing: 2px;
+    font-weight: 600;
+    color: #2874f0;
+    background: #e8f0fe;
+    border: 1px solid #c5d8fd;
+    border-radius: 3px;
+    padding: 3px 9px;
+    white-space: nowrap;
+  }
+
+  .page-sub {
+    font-size: 13px;
+    color: #9e9e9e;
+    margin-bottom: 1.6rem;
+  }
+
+  /* ── Divider ──────────────────────────── */
+
+  .section-divider {
+    border: none;
+    border-top: 1px solid #f0f0f0;
+    margin: 1.4rem 0;
   }
 
   /* ── Error Messages ───────────────────── */
@@ -104,45 +143,39 @@ pageEncoding="UTF-8"%>
 
   .error {
     display: block;
-    color: #ff4d6d;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 1px;
+    color: #d32f2f;
+    font-size: 12px;
     margin-bottom: 6px;
-    padding: 4px 8px;
-    background: rgba(255,77,109,0.07);
-    border-left: 2px solid #ff4d6d;
-    border-radius: 0 4px 4px 0;
+    padding: 8px 10px;
+    background: #fdecea;
+    border-left: 3px solid #f44336;
+    border-radius: 0 3px 3px 0;
   }
 
   /* ── Form Groups ──────────────────────── */
 
   .form-group {
-    margin-bottom: 14px;
+    margin-bottom: 16px;
   }
 
   label {
     display: block;
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: rgba(175,169,236,0.7);
-    margin-bottom: 7px;
+    color: #212121;
+    margin-bottom: 6px;
   }
 
-  input,
-  textarea {
+  input, textarea {
     width: 100%;
-    padding: 10px 14px;
-    background: #070b14;
-    border: 1px solid rgba(127,119,221,0.25);
-    border-radius: 6px;
-    color: #c8d8e8;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 13px;
+    padding: 10px 12px;
+    border: 1px solid #c8c8c8;
+    border-radius: 3px;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    color: #212121;
     outline: none;
-    transition: border-color 0.2s;
+    transition: border-color 0.15s, box-shadow 0.15s;
   }
 
   textarea {
@@ -150,9 +183,9 @@ pageEncoding="UTF-8"%>
     height: 90px;
   }
 
-  input:focus,
-  textarea:focus {
-    border-color: #afa9ec;
+  input:focus, textarea:focus {
+    border-color: #2874f0;
+    box-shadow: 0 0 0 3px rgba(40,116,240,0.1);
   }
 
   /* ── Two Column Grid ──────────────────── */
@@ -160,69 +193,45 @@ pageEncoding="UTF-8"%>
   .two-col {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    gap: 14px;
   }
 
   /* ── Submit Button ────────────────────── */
 
   button {
     width: 100%;
-    padding: 12px;
-    background: rgba(127,119,221,0.1);
-    border: 1px solid #7f77dd;
-    color: #afa9ec;
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 15px;
+    padding: 11px;
+    background: #2874f0;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    font-size: 14px;
     font-weight: 600;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    border-radius: 6px;
+    font-family: 'Inter', sans-serif;
     cursor: pointer;
-    margin-top: 6px;
-    transition: background 0.2s;
+    transition: background 0.15s;
+    letter-spacing: 0.3px;
   }
 
   button:hover {
-    background: rgba(127,119,221,0.22);
-  }
-
-  /* ── Divider ──────────────────────────── */
-
-  .divider {
-    border: none;
-    border-top: 1px solid rgba(127,119,221,0.12);
-    margin: 1.2rem 0 1rem;
-  }
-
-  /* ── Back Link ────────────────────────── */
-
-  .back-link {
-    display: block;
-    text-align: center;
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 13px;
-    color: rgba(0,240,255,0.5);
-    letter-spacing: 1px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: color 0.15s;
-  }
-
-  .back-link:hover {
-    color: #00f0ff;
+    background: #1a5dc8;
   }
 
 </style>
 </head>
 <body>
 
-<div class="container">
+<!-- Top Nav -->
+<div class="topbar">
+  <a href="dashboard" class="topbar-logo">Shop<span>Admin</span></a>
+  <a href="dashboard" class="topbar-back">&larr; Back to Dashboard</a>
+</div>
 
-  <div class="edit-icon">&#9998;</div>
+<!-- Page Content -->
+<div class="page-wrap">
 
-  <div class="fx-heading">
-    <h2>Update Product</h2>
-    <p>MODIFY ENTRY // PRODUCT REGISTRY</p>
+  <div class="breadcrumb">
+    <a href="dashboard">Dashboard</a> &rsaquo; Update Product
   </div>
 
 <%
@@ -285,41 +294,48 @@ stock = request.getAttribute("stock").toString();
 }
 %>
 
-  <div class="id-badge">RECORD ID :: #<%= id.isEmpty() ? "---" : String.format("%03d", Integer.parseInt(id.isEmpty() ? "0" : id)) %></div>
+  <div class="container">
 
-  <form action="updateProduct" method="post">
-
-    <input type="hidden" name="id" value="<%= id %>">
-
-    <div class="form-group">
-      <label>Name</label>
-      <input type="text" name="name" value="<%= name %>">
+    <div class="heading-row">
+      <div class="page-heading">Update Product</div>
+      <div class="id-badge">ID #<%= id.isEmpty() ? "---" : String.format("%03d", Integer.parseInt(id.isEmpty() ? "0" : id)) %></div>
     </div>
+    <div class="page-sub">Edit the fields below and save your changes.</div>
 
-    <div class="form-group">
-      <label>Description</label>
-      <textarea name="description"><%= description %></textarea>
-    </div>
+    <hr class="section-divider">
 
-    <div class="two-col">
+    <form action="updateProduct" method="post">
+
+      <input type="hidden" name="id" value="<%= id %>">
+
       <div class="form-group">
-        <label>Price</label>
-        <input type="text" name="price" value="<%= price %>">
+        <label>Product Name</label>
+        <input type="text" name="name" value="<%= name %>">
       </div>
+
       <div class="form-group">
-        <label>Stock</label>
-        <input type="text" name="stock" value="<%= stock %>">
+        <label>Description</label>
+        <textarea name="description"><%= description %></textarea>
       </div>
-    </div>
 
-    <button type="submit">&#9998; Update Product</button>
+      <div class="two-col">
+        <div class="form-group">
+          <label>Price (&#8377;)</label>
+          <input type="text" name="price" value="<%= price %>">
+        </div>
+        <div class="form-group">
+          <label>Stock Units</label>
+          <input type="text" name="stock" value="<%= stock %>">
+        </div>
+      </div>
 
-  </form>
+      <hr class="section-divider">
 
-  <hr class="divider">
+      <button type="submit">Save Changes</button>
 
-  <a href="dashboard" class="back-link">&#8592; Back to Dashboard</a>
+    </form>
 
+  </div>
 </div>
 
 </body>

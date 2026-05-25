@@ -7,7 +7,7 @@ pageEncoding="UTF-8"%>
 <head>
 <meta charset="UTF-8">
 <title>User Registration</title>
-<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 
   *, *::before, *::after {
@@ -17,61 +17,48 @@ pageEncoding="UTF-8"%>
   }
 
   body {
-    font-family: 'Rajdhani', sans-serif;
-    background: #040810;
+    font-family: 'Inter', sans-serif;
+    background: #f1f3f6;
     min-height: 100vh;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 2rem;
-    background-image:
-      linear-gradient(rgba(0,240,255,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,240,255,0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
   }
+
+  /* ── Logo Bar ─────────────────────────── */
+
+  .site-logo {
+    font-size: 24px;
+    font-weight: 700;
+    font-style: italic;
+    color: #2874f0;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.5px;
+  }
+
+  .site-logo span { color: #ff9f00; }
 
   /* ── Card ─────────────────────────────── */
 
   .container {
     width: 100%;
     max-width: 420px;
-    background: #0d1929;
-    border: 1px solid rgba(0,240,255,0.25);
-    border-radius: 12px;
-    padding: 2.2rem 2rem 1.8rem;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .container::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, #00f0ff, #7f77dd, #00f0ff);
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 2rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
   }
 
   /* ── Heading ──────────────────────────── */
 
-  .fx-heading {
-    text-align: center;
-    margin-bottom: 1.8rem;
-  }
-
   .fx-heading h2 {
-    font-size: 24px;
-    font-weight: 600;
-    color: #00f0ff;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-  }
-
-  .fx-heading p {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 11px;
-    color: rgba(0,240,255,0.4);
-    letter-spacing: 2px;
-    margin-top: 6px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #212121;
+    margin-bottom: 1.5rem;
   }
 
   /* ── Form Groups ──────────────────────── */
@@ -82,64 +69,71 @@ pageEncoding="UTF-8"%>
 
   label {
     display: block;
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: rgba(0,240,255,0.7);
-    margin-bottom: 7px;
+    color: #212121;
+    margin-bottom: 6px;
   }
 
   input {
     width: 100%;
-    padding: 10px 14px;
-    background: #070b14;
-    border: 1px solid rgba(0,240,255,0.2);
-    border-radius: 6px;
-    color: #c8d8e8;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 13px;
+    padding: 10px 12px;
+    border: 1px solid #c8c8c8;
+    border-radius: 3px;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    color: #212121;
     outline: none;
-    transition: border-color 0.2s;
+    transition: border-color 0.15s, box-shadow 0.15s;
   }
 
   input::placeholder {
-    color: rgba(140,170,190,0.3);
+    color: #bdbdbd;
   }
 
   input:focus {
-    border-color: #00f0ff;
+    border-color: #2874f0;
+    box-shadow: 0 0 0 3px rgba(40,116,240,0.1);
   }
 
   /* ── Button ───────────────────────────── */
 
   button {
     width: 100%;
-    padding: 12px;
-    background: transparent;
-    border: 1px solid #00f0ff;
-    color: #00f0ff;
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 15px;
+    padding: 11px;
+    background: #ff9f00;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    font-size: 14px;
     font-weight: 600;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    border-radius: 6px;
+    font-family: 'Inter', sans-serif;
     cursor: pointer;
-    margin-top: 6px;
-    transition: background 0.2s;
+    margin-top: 4px;
+    transition: background 0.15s;
+    letter-spacing: 0.3px;
   }
 
   button:hover {
-    background: rgba(0,240,255,0.12);
+    background: #e8900a;
   }
 
   /* ── Divider ──────────────────────────── */
 
   .divider {
-    border: none;
-    border-top: 1px solid rgba(0,240,255,0.1);
-    margin: 1.4rem 0 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 1.3rem 0;
+    color: #9e9e9e;
+    font-size: 12px;
+  }
+
+  .divider::before,
+  .divider::after {
+    content: '';
+    flex: 1;
+    border-top: 1px solid #e0e0e0;
   }
 
   /* ── Login Link ───────────────────────── */
@@ -147,19 +141,17 @@ pageEncoding="UTF-8"%>
   .login-link {
     text-align: center;
     font-size: 13px;
-    color: rgba(140,170,190,0.6);
-    letter-spacing: 1px;
+    color: #616161;
   }
 
   .login-link a {
-    color: #afa9ec;
+    color: #2874f0;
     text-decoration: none;
     font-weight: 600;
-    transition: color 0.15s;
   }
 
   .login-link a:hover {
-    color: #7f77dd;
+    text-decoration: underline;
   }
 
   /* ── Error Messages ───────────────────── */
@@ -170,51 +162,60 @@ pageEncoding="UTF-8"%>
 
   .error-msg {
     display: block;
-    color: #ff4d6d;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 1px;
+    color: #d32f2f;
+    font-size: 12px;
+    font-family: 'Inter', sans-serif;
     margin-bottom: 6px;
-    padding-left: 4px;
-    border-left: 2px solid #ff4d6d;
-    padding: 4px 8px;
-    background: rgba(255,77,109,0.07);
-    border-radius: 0 4px 4px 0;
+    padding: 8px 10px;
+    background: #fdecea;
+    border-left: 3px solid #f44336;
+    border-radius: 0 3px 3px 0;
+  }
+
+  /* ── Footer ───────────────────────────── */
+
+  .page-footer {
+    margin-top: 1.5rem;
+    font-size: 11px;
+    color: #9e9e9e;
+    text-align: center;
+    letter-spacing: 0.5px;
   }
 
 </style>
 </head>
 <body>
 
+<div class="site-logo">Shop<span>Admin</span></div>
+
 <div class="container">
 
   <div class="fx-heading">
-    <h2>User Registration</h2>
-    <p>INITIALIZE NEW ACCOUNT // SECURE CHANNEL</p>
+    <h2>Create your account</h2>
   </div>
 
   <form action="register" method="post">
 
     <div class="form-group">
-      <label>Name</label>
+      <label>Full Name</label>
       <input type="text" name="name" placeholder="Enter your name" required>
     </div>
 
     <div class="form-group">
-      <label>Email</label>
+      <label>Email address</label>
       <input type="email" name="email" placeholder="Enter your email" required>
     </div>
 
     <div class="form-group">
       <label>Password</label>
-      <input type="password" name="password" placeholder="Enter your password" required>
+      <input type="password" name="password" placeholder="Create a password" required>
     </div>
 
-    <button type="submit">&#9655; Register</button>
+    <button type="submit">Create Account</button>
 
   </form>
 
-  <hr class="divider">
+  <div class="divider">or</div>
 
   <div class="login-link">
     Already have an account?
@@ -241,6 +242,8 @@ if(errors != null){
 %>
 
 </div>
+
+<div class="page-footer">ECOMMERCE ADMIN PANEL &bull; ALL RIGHTS RESERVED</div>
 
 </body>
 </html>

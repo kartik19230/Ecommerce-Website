@@ -19,9 +19,17 @@ public class DashboardServlet extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+		String keyword = req.getParameter("keyword");
+				
 		ProductDao dao = new ProductDao();
 		
-		List<Product> products = dao.getAllProducts();
+		List<Product> products;
+		
+		if (keyword != null && !keyword.trim().isEmpty()) {
+			products = dao.searchProduct(keyword);
+		}else {
+			products = dao.getAllProducts();
+		}
 		
 		req.setAttribute("products", products);
 		

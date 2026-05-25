@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 pageEncoding="UTF-8"%>
 
@@ -9,7 +10,7 @@ pageEncoding="UTF-8"%>
 <head>
 <meta charset="UTF-8">
 <title>Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 
   *, *::before, *::after {
@@ -19,370 +20,449 @@ pageEncoding="UTF-8"%>
   }
 
   body {
-    font-family: 'Rajdhani', sans-serif;
-    background: #040810;
-    color: #c8d8e8;
+    font-family: 'Inter', sans-serif;
+    background: #f1f3f6;
+    color: #212121;
     min-height: 100vh;
-    padding: 2rem;
-    background-image:
-      linear-gradient(rgba(0,240,255,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,240,255,0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
   }
 
-  /* ── Top Bar ──────────────────────────── */
+  /* ── Top Navigation Bar ───────────────── */
 
-  .dash-header {
+  .topbar {
+    background: #2874f0;
+    padding: 0 2rem;
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 2rem;
-    padding-bottom: 1.2rem;
-    border-bottom: 1px solid rgba(0,240,255,0.2);
+    align-items: center;
+    gap: 1rem;
+    height: 56px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
   }
 
-  .header-title {
-    font-size: 26px;
+  .topbar-logo {
+    color: #fff;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    white-space: nowrap;
+    font-style: italic;
+    text-decoration: none;
+  }
+
+  .topbar-logo span {
+    color: #ffe500;
+  }
+
+  .topbar-logo small {
+    font-size: 10px;
+    font-style: normal;
+    color: rgba(255,255,255,0.65);
+    font-weight: 400;
+    margin-left: 4px;
+  }
+
+  /* ── Search Bar ───────────────────────── */
+
+  .search-wrap {
+    flex: 1;
+    max-width: 680px;
+    display: flex;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .search-wrap input {
+    flex: 1;
+    padding: 10px 14px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    color: #212121;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .search-wrap button {
+    background: #ffe500;
+    border: none;
+    padding: 0 18px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.15s;
+  }
+
+  .search-wrap button:hover {
+    background: #f0d800;
+  }
+
+  /* ── Top Action Buttons ───────────────── */
+
+  .topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-left: auto;
+  }
+
+  .topbar-btn {
+    color: #fff;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 7px 12px;
+    border-radius: 3px;
+    transition: background 0.15s;
+    border: 1px solid transparent;
+    font-family: 'Inter', sans-serif;
+    white-space: nowrap;
+  }
+
+  .topbar-btn:hover {
+    border-color: #fff;
+  }
+
+  .topbar-btn.add {
+    background: #ff9f00;
+    border-color: #ff9f00;
     font-weight: 600;
-    color: #00f0ff;
-    letter-spacing: 4px;
+  }
+
+  .topbar-btn.add:hover {
+    background: #e8900a;
+    border-color: #e8900a;
+  }
+
+  .topbar-btn.logout {
+    border-color: rgba(255,255,255,0.45);
+  }
+
+  /* ── Stats Bar ────────────────────────── */
+
+  .stats-bar {
+    background: #fff;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 12px 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+
+  .stat-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 2rem 0 0;
+  }
+
+  .stat-item + .stat-item {
+    border-left: 1px solid #e0e0e0;
+    padding-left: 2rem;
+  }
+
+  .stat-num {
+    font-size: 22px;
+    font-weight: 700;
+    color: #2874f0;
+    line-height: 1;
+  }
+
+  .stat-num.green { color: #388e3c; }
+  .stat-num.red   { color: #f44336; }
+
+  .stat-lbl {
+    font-size: 11px;
+    color: #9e9e9e;
     text-transform: uppercase;
+    letter-spacing: 1px;
+    line-height: 1.3;
   }
 
-  .header-sub {
+  .sys-online {
+    margin-left: auto;
     font-size: 12px;
-    color: rgba(255,255,255,0.3);
-    letter-spacing: 2px;
-    margin-top: 4px;
+    color: #388e3c;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
   }
 
-  .status-dot {
-    display: inline-block;
+  .sys-online::before {
+    content: '';
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: #00f0ff;
-    margin-right: 8px;
+    background: #388e3c;
+    display: inline-block;
     animation: blink 2s infinite;
   }
 
   @keyframes blink {
     0%, 100% { opacity: 1; }
-    50%       { opacity: 0.2; }
+    50%       { opacity: 0.3; }
   }
 
-  /* ── Stat Cards ───────────────────────── */
+  /* ── Main Content ─────────────────────── */
 
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
-    margin-bottom: 1.8rem;
+  .main {
+    padding: 1.5rem 2rem 3rem;
   }
 
-  .stat-card {
-    background: #0d1929;
-    border: 1px solid rgba(0,240,255,0.2);
-    border-radius: 8px;
-    padding: 14px 18px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .stat-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, #00f0ff, #7f77dd);
-  }
-
-  .stat-label {
-    font-size: 11px;
-    color: rgba(0,240,255,0.6);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-
-  .stat-value {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 26px;
-    color: #ffffff;
-  }
-
-  /* ── Add Button ───────────────────────── */
-
-  .btn-add {
-    display: inline-flex;
+  .section-header {
+    display: flex;
     align-items: center;
-    gap: 6px;
-    background: transparent;
-    border: 1px solid #00f0ff;
-    color: #00f0ff;
-    border-radius: 6px;
-    padding: 9px 18px;
-    font-family: 'Rajdhani', sans-serif;
+    justify-content: space-between;
+    margin-bottom: 1.2rem;
+  }
+
+  .section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #212121;
+    padding-bottom: 6px;
+    border-bottom: 3px solid #2874f0;
+    display: inline-block;
+  }
+
+  .record-count {
     font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    text-decoration: none;
-    transition: background 0.2s;
+    color: #9e9e9e;
   }
 
-  .btn-add:hover {
-    background: rgba(0,240,255,0.12);
+  /* ── Product Grid ─────────────────────── */
+
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
   }
 
-  /* ── Table ────────────────────────────── */
+  /* ── Product Card ─────────────────────── */
 
-  .table-wrap {
-    border: 1px solid rgba(0,240,255,0.15);
-    border-radius: 10px;
-    overflow: hidden;
+  .p-card {
+    background: #fff;
+    border-radius: 4px;
+    padding: 1rem;
+    border: 1px solid #e0e0e0;
+    transition: box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
   }
 
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 13px;
+  .p-card:hover {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.12);
   }
 
-  thead {
-    background: #0d1929;
-  }
-
-  thead th {
-    padding: 12px 16px;
-    text-align: left;
-    color: #00f0ff;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    border-bottom: 1px solid rgba(0,240,255,0.2);
-  }
-
-  tbody tr {
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-    transition: background 0.15s;
-  }
-
-  tbody tr:last-child {
-    border-bottom: none;
-  }
-
-  tbody tr:hover {
-    background: rgba(0,240,255,0.05);
-  }
-
-  tbody td {
-    padding: 12px 16px;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 12px;
-    color: #8aaabb;
-    vertical-align: middle;
-  }
-
-  .td-name {
-    color: #ffffff;
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
+  .p-card-id {
+    font-size: 10px;
+    color: #bdbdbd;
+    font-family: monospace;
     letter-spacing: 1px;
   }
 
-  .td-desc {
-    color: rgba(140,170,190,0.7);
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 13px;
+  .p-card-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: #212121;
+    line-height: 1.3;
   }
 
-  .badge-price {
-    display: inline-block;
-    background: rgba(0,240,255,0.1);
-    color: #00f0ff;
-    border: 1px solid rgba(0,240,255,0.35);
-    padding: 3px 9px;
-    border-radius: 4px;
+  .p-card-desc {
     font-size: 12px;
-    font-family: 'Share Tech Mono', monospace;
+    color: #9e9e9e;
+    line-height: 1.5;
+    flex: 1;
   }
 
-  .badge-stock {
-    display: inline-block;
-    background: rgba(127,119,221,0.1);
-    color: #afa9ec;
-    border: 1px solid rgba(127,119,221,0.35);
-    padding: 3px 9px;
-    border-radius: 4px;
+  .p-card-divider {
+    border: none;
+    border-top: 1px solid #f0f0f0;
+  }
+
+  .p-card-price {
+    font-size: 20px;
+    font-weight: 700;
+    color: #212121;
+  }
+
+  .p-card-stock {
     font-size: 12px;
-    font-family: 'Share Tech Mono', monospace;
+    color: #388e3c;
+    font-weight: 600;
   }
 
-  /* ── Action Buttons ───────────────────── */
+  /* ── Card Action Buttons ──────────────── */
 
-  .actions {
+  .p-card-actions {
     display: flex;
     gap: 8px;
+    margin-top: 4px;
   }
 
-  .btn-update {
-    display: inline-block;
-    color: #00f0ff;
-    font-size: 11px;
+  .btn-edit {
+    flex: 1;
+    padding: 8px;
+    background: #2874f0;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    font-size: 13px;
     font-weight: 600;
-    font-family: 'Rajdhani', sans-serif;
-    letter-spacing: 1px;
-    text-transform: uppercase;
+    cursor: pointer;
     text-decoration: none;
-    padding: 4px 11px;
-    border: 1px solid rgba(0,240,255,0.4);
-    border-radius: 4px;
+    text-align: center;
     transition: background 0.15s;
+    font-family: 'Inter', sans-serif;
   }
 
-  .btn-update:hover {
-    background: rgba(0,240,255,0.15);
+  .btn-edit:hover {
+    background: #1a5dc8;
   }
 
-  .btn-delete {
-    display: inline-block;
-    color: #ff4d6d;
-    font-size: 11px;
+  .btn-del {
+    flex: 1;
+    padding: 8px;
+    background: #fff;
+    color: #f44336;
+    border: 1px solid #f44336;
+    border-radius: 3px;
+    font-size: 13px;
     font-weight: 600;
-    font-family: 'Rajdhani', sans-serif;
-    letter-spacing: 1px;
-    text-transform: uppercase;
+    cursor: pointer;
     text-decoration: none;
-    padding: 4px 11px;
-    border: 1px solid rgba(255,77,109,0.4);
-    border-radius: 4px;
-    transition: background 0.15s;
+    text-align: center;
+    transition: all 0.15s;
+    font-family: 'Inter', sans-serif;
   }
 
-  .btn-delete:hover {
-    background: rgba(255,77,109,0.15);
+  .btn-del:hover {
+    background: #f44336;
+    color: #fff;
+  }
+
+  /* ── Empty State ──────────────────────── */
+
+  .empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem 2rem;
+    color: #9e9e9e;
+  }
+
+  .empty-state h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+    color: #bdbdbd;
   }
 
   /* ── Footer ───────────────────────────── */
 
-  .dash-footer {
-    margin-top: 1.5rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .sys-status {
-    font-family: 'Share Tech Mono', monospace;
+  .sys-footer {
+    text-align: center;
+    padding: 1rem 2rem;
     font-size: 11px;
-    color: rgba(0,240,255,0.4);
-    letter-spacing: 2px;
-  }
-
-  .btn-logout {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    color: #ff4d6d;
-    font-size: 12px;
-    font-weight: 600;
-    font-family: 'Rajdhani', sans-serif;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    text-decoration: none;
-    padding: 7px 16px;
-    border: 1px solid rgba(255,77,109,0.35);
-    border-radius: 6px;
-    transition: background 0.15s;
-  }
-
-  .btn-logout:hover {
-    background: rgba(255,77,109,0.12);
+    color: #bdbdbd;
+    letter-spacing: 1px;
+    background: #fff;
+    border-top: 1px solid #e0e0e0;
+    margin-top: 2rem;
   }
 
 </style>
 </head>
 <body>
 
-<%
-List<Product> products =
-(List<Product>) request.getAttribute("products");
-%>
+<!-- ── Top Navigation Bar ───────────────────────── -->
+<div class="topbar">
 
-<!-- Header -->
-<div class="dash-header">
-  <div>
-    <div class="header-title">
-      <span class="status-dot"></span>Product Control Panel
-    </div>
-    <div class="header-sub">ECOMMERCE MANAGEMENT SYSTEM // DASHBOARD</div>
+  <a href="dashboard" class="topbar-logo">
+    Shop<span>Admin</span><small>panel</small>
+  </a>
+
+  <form class="search-wrap" action="dashboard" method="get">
+    <input type="text" name="keyword" placeholder="Search products by name..." value="${param.keyword}">
+    <button type="submit">&#128269;</button>
+  </form>
+
+  <div class="topbar-actions">
+    <a href="addProduct.jsp" class="topbar-btn add">+ Add Product</a>
+    <a href="logout" class="topbar-btn logout">Logout &rarr;</a>
   </div>
-  <a href="addProduct.jsp" class="btn-add">&#43; New Product</a>
+
 </div>
 
-<!-- Stat Cards -->
-<div class="stats-grid">
-  <div class="stat-card">
-    <div class="stat-label">Total Products</div>
-    <div class="stat-value"><%= products != null ? String.format("%03d", products.size()) : "000" %></div>
+<!-- ── Stats Bar ─────────────────────────────────── -->
+<div class="stats-bar">
+
+  <div class="stat-item">
+    <div class="stat-num">${empty products ? '0' : products.size()}</div>
+    <div class="stat-lbl">Total<br>Products</div>
   </div>
-  <div class="stat-card">
-    <div class="stat-label">Records Loaded</div>
-    <div class="stat-value"><%= products != null ? String.format("%03d", products.size()) : "000" %></div>
+
+  <div class="stat-item">
+    <div class="stat-num green">${empty products ? '0' : products.size()}</div>
+    <div class="stat-lbl">Records<br>Loaded</div>
   </div>
-  <div class="stat-card" style="border-color: rgba(127,119,221,0.25);">
-    <div class="stat-label" style="color: rgba(175,169,236,0.7);">System Status</div>
-    <div class="stat-value" style="color: #afa9ec; font-size: 16px; padding-top: 6px;">ONLINE &#9679;</div>
+
+  <div class="stat-item">
+    <div class="stat-num" style="color:#ff9f00">Admin</div>
+    <div class="stat-lbl">Active<br>Session</div>
+  </div>
+
+  <div class="sys-online">SYSTEM ONLINE</div>
+
+</div>
+
+<!-- ── Main Content ──────────────────────────────── -->
+<div class="main">
+
+  <div class="section-header">
+    <span class="section-title">All Products</span>
+    <span class="record-count">${empty products ? '0' : products.size()} records found</span>
+  </div>
+
+  <!-- Product Card Grid -->
+  <div class="product-grid">
+
+    <c:choose>
+      <c:when test="${empty products}">
+        <div class="empty-state">
+          <h3>No products found</h3>
+          <p>Try a different search or <a href="addProduct.jsp" style="color:#2874f0">add a new product</a>.</p>
+        </div>
+      </c:when>
+      <c:otherwise>
+        <c:forEach var="product" items="${products}">
+          <div class="p-card">
+
+            <div class="p-card-id">#${product.id}</div>
+            <div class="p-card-name">${product.name}</div>
+            <div class="p-card-desc">${product.description}</div>
+
+            <hr class="p-card-divider">
+
+            <div class="p-card-price">&#8377;${product.price}</div>
+            <div class="p-card-stock">In Stock: ${product.stock} units</div>
+
+            <div class="p-card-actions">
+              <a href="editProduct?id=${product.id}" class="btn-edit">Edit</a>
+              <a href="deleteProduct?id=${product.id}" class="btn-del">Delete</a>
+            </div>
+
+          </div>
+        </c:forEach>
+      </c:otherwise>
+    </c:choose>
+
   </div>
 </div>
 
-<!-- Product Table -->
-<div class="table-wrap">
-<table>
-
-<thead>
-<tr>
-  <th>ID</th>
-  <th>Name</th>
-  <th>Description</th>
-  <th>Price</th>
-  <th>Stock</th>
-  <th>Actions</th>
-</tr>
-</thead>
-
-<tbody>
-<%
-for(Product p : products){
-%>
-<tr>
-  <td>#<%= String.format("%03d", p.getId()) %></td>
-  <td class="td-name"><%= p.getName() %></td>
-  <td class="td-desc"><%= p.getDescription() %></td>
-  <td><span class="badge-price"><%= p.getPrice() %></span></td>
-  <td><span class="badge-stock"><%= p.getStock() %></span></td>
-  <td>
-    <div class="actions">
-      <a href="editProduct?id=<%= p.getId() %>" class="btn-update">Update</a>
-      <a href="deleteProduct?id=<%= p.getId() %>" class="btn-delete">Delete</a>
-    </div>
-  </td>
-</tr>
-<%
-}
-%>
-</tbody>
-
-</table>
-</div>
-
-<!-- Footer -->
-<div class="dash-footer">
-  <span class="sys-status">SYS::READY &mdash; <%= products != null ? products.size() : 0 %> RECORDS LOADED</span>
-  <a href="logout" class="btn-logout">&#8594; Logout</a>
+<!-- ── Footer ────────────────────────────────────── -->
+<div class="sys-footer">
+  ECOMMERCE ADMIN PANEL &nbsp;&bull;&nbsp; ${empty products ? '0' : products.size()} RECORDS LOADED
 </div>
 
 </body>
