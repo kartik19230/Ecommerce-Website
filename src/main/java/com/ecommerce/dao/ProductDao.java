@@ -209,5 +209,37 @@ public class ProductDao {
 
 		return Collections.emptyList();
 	}
+	
+	public List<Product> getProuductsWithPagination(int pageNumber,int pageSize){
+		
+		EntityManager em = null;
+		
+		try {
+
+			em = HibernateUtil.getEMF().createEntityManager();
+
+			String hql = "Select p From Product p";
+
+			TypedQuery<Product> query = em.createQuery(hql, Product.class);
+			
+			int start = (pageNumber - 1) * pageSize;
+			
+			query.setFirstResult(start);
+			query.setMaxResults(pageSize);
+			
+			return query.getResultList();
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		} finally {
+
+			if (em != null && em.isOpen()) {
+				em.close();
+			}
+		}
+
+		return Collections.emptyList();
+	}
 
 }

@@ -20,15 +20,33 @@ public class DashboardServlet extends HttpServlet{
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 		String keyword = req.getParameter("keyword");
+		String pageParam = req.getParameter("page");
+		
+		int currentPage = 1;
+		int pageSize = 6;
+		
+		if (pageParam != null) {
+			try {
+				currentPage = Integer.parseInt(pageParam);
+			} catch (NumberFormatException e) {
+				
+				RequestDispatcher rd = req.getRequestDispatcher("/WEB-INF/view/dashboard.jsp");
+				
+				rd.forward(req, resp);
+			}
+			
+		}
 				
 		ProductDao dao = new ProductDao();
 		
 		List<Product> products;
 		
 		if (keyword != null && !keyword.trim().isEmpty()) {
+			
 			products = dao.searchProduct(keyword);
-		}else {
-			products = dao.getAllProducts();
+		}
+		else {
+			products = dao.getProuductsWithPagination(currentPage, pageSize);
 		}
 		
 		req.setAttribute("products", products);

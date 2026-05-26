@@ -459,6 +459,11 @@ pageEncoding="UTF-8"%>
 
   </div>
 </div>
+<div class="sys-footer">
+<a href="dashboard?page=1">1</a>
+<a href="dashboard?page=2">2</a>
+<a href="dashboard?page=3">3</a>
+</div>
 
 <!-- ── Footer ────────────────────────────────────── -->
 <div class="sys-footer">
