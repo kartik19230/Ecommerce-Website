@@ -22,22 +22,30 @@ public class DashboardServlet extends HttpServlet{
 		String keyword = req.getParameter("keyword");
 		String pageParam = req.getParameter("page");
 		
+		ProductDao dao = new ProductDao();
+		
 		int currentPage = 1;
 		int pageSize = 6;
+		
+		int totalPages = (int)Math.ceil((double)dao.getTotalProductsCount()/pageSize);
+
 		
 		if (pageParam != null) {
 			try {
 				currentPage = Integer.parseInt(pageParam);
 			} catch (NumberFormatException e) {
-				
-				RequestDispatcher rd = req.getRequestDispatcher("/WEB-INF/view/dashboard.jsp");
-				
-				rd.forward(req, resp);
+				currentPage = 1;
 			}
 			
 		}
-				
-		ProductDao dao = new ProductDao();
+		
+		
+		if (currentPage > totalPages) {
+			currentPage = totalPages;
+		}
+		if(currentPage < 1) {
+			currentPage = 1;
+		}
 		
 		List<Product> products;
 		
@@ -50,6 +58,8 @@ public class DashboardServlet extends HttpServlet{
 		}
 		
 		req.setAttribute("products", products);
+		req.setAttribute("currentPage", currentPage);
+		req.setAttribute("totalPages", totalPages);
 		
 		RequestDispatcher rd = req.getRequestDispatcher("/WEB-INF/view/dashboard.jsp");
 		

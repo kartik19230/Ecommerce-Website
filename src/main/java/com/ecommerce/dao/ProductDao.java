@@ -242,4 +242,31 @@ public class ProductDao {
 		return Collections.emptyList();
 	}
 
+	public Long getTotalProductsCount() {
+		
+		EntityManager em = null;
+
+		try {
+
+			em = HibernateUtil.getEMF().createEntityManager();
+
+			String hql = "Select Count(p) From Product p";
+
+			TypedQuery<Long> query = em.createQuery(hql, Long.class);
+			
+			return query.getSingleResult();
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		} finally {
+
+			if (em != null && em.isOpen()) {
+				em.close();
+			}
+		}
+
+		return 0L;
+		
+	}
 }

@@ -371,6 +371,36 @@ pageEncoding="UTF-8"%>
     margin-top: 2rem;
   }
 
+.pagination{
+	text-align: center;
+    padding: 1rem 2rem;
+    font-size: 11px;
+    color: #bdbdbd;
+    letter-spacing: 1px;
+    background: #fff;
+    border-top: 1px solid #e0e0e0;
+    margin-top: 2rem;
+}
+
+.page-link{
+    padding: 8px 14px;
+    text-decoration: none;
+    background: #f1f1f1;
+    color: #333;
+    border-radius: 6px;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.page-link:hover{
+    background: #dcdcdc;
+}
+
+.active-page{
+    background: #222;
+    color: white;
+}
+
 </style>
 </head>
 <body>
@@ -459,10 +489,21 @@ pageEncoding="UTF-8"%>
 
   </div>
 </div>
-<div class="sys-footer">
-<a href="dashboard?page=1">1</a>
-<a href="dashboard?page=2">2</a>
-<a href="dashboard?page=3">3</a>
+<div class="pagination">
+
+<c:forEach begin="1"
+           end="${totalPages}"
+           var="i">
+
+    <a href="dashboard?page=${i}"
+       class="page-link ${i == currentPage ? 'active-page' : ''}">
+
+        ${i}
+
+    </a>
+
+</c:forEach>
+
 </div>
 
 <!-- ── Footer ────────────────────────────────────── -->
