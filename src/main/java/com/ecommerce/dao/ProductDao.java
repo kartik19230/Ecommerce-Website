@@ -192,7 +192,7 @@ public class ProductDao {
 			String hql = "Select p From Product p Where Lower(p.name) Like Lower(:keyword)";
 
 			TypedQuery<Product> query = em.createQuery(hql, Product.class);
-			
+
 			query.setParameter("keyword", "%" + keyword + "%");
 
 			return query.getResultList();
@@ -209,11 +209,11 @@ public class ProductDao {
 
 		return Collections.emptyList();
 	}
-	
-	public List<Product> getProuductsWithPagination(int pageNumber,int pageSize){
-		
+
+	public List<Product> getProuductsWithPagination(int pageNumber, int pageSize) {
+
 		EntityManager em = null;
-		
+
 		try {
 
 			em = HibernateUtil.getEMF().createEntityManager();
@@ -221,12 +221,12 @@ public class ProductDao {
 			String hql = "Select p From Product p";
 
 			TypedQuery<Product> query = em.createQuery(hql, Product.class);
-			
+
 			int start = (pageNumber - 1) * pageSize;
-			
+
 			query.setFirstResult(start);
 			query.setMaxResults(pageSize);
-			
+
 			return query.getResultList();
 
 		} catch (Exception e) {
@@ -243,7 +243,7 @@ public class ProductDao {
 	}
 
 	public Long getTotalProductsCount() {
-		
+
 		EntityManager em = null;
 
 		try {
@@ -253,7 +253,7 @@ public class ProductDao {
 			String hql = "Select Count(p) From Product p";
 
 			TypedQuery<Long> query = em.createQuery(hql, Long.class);
-			
+
 			return query.getSingleResult();
 
 		} catch (Exception e) {
@@ -267,6 +267,70 @@ public class ProductDao {
 		}
 
 		return 0L;
-		
+
+	}
+
+	public Long getTotalSearchProductsCount(String keyword) {
+
+		EntityManager em = null;
+
+		try {
+
+			em = HibernateUtil.getEMF().createEntityManager();
+
+			String hql = "Select Count(p) From Product p Where Lower(p.name) Like Lower(:keyword)";
+
+			TypedQuery<Long> query = em.createQuery(hql, Long.class);
+
+			query.setParameter("keyword", "%" + keyword + "%");
+
+			return query.getSingleResult();
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		} finally {
+
+			if (em != null && em.isOpen()) {
+				em.close();
+			}
+		}
+
+		return 0L;
+
+	}
+
+	public List<Product> searchProductWithPagination(String keyword, int pageNumber, int pageSize) {
+
+		EntityManager em = null;
+
+		try {
+
+			em = HibernateUtil.getEMF().createEntityManager();
+
+			String hql = "Select p From Product p Where Lower(p.name) Like Lower(:keyword)";
+
+			TypedQuery<Product> query = em.createQuery(hql, Product.class);
+			
+			query.setParameter("keyword", "%" + keyword + "%");
+
+			int start = (pageNumber - 1) * pageSize;
+
+			query.setFirstResult(start);
+			query.setMaxResults(pageSize);
+
+			return query.getResultList();
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		} finally {
+
+			if (em != null && em.isOpen()) {
+				em.close();
+			}
+		}
+
+		return Collections.emptyList();
 	}
 }
