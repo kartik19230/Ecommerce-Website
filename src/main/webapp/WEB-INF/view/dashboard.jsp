@@ -418,7 +418,7 @@ pageEncoding="UTF-8"%>
   </form>
 
   <div class="topbar-actions">
-    <a href="addProduct.jsp" class="topbar-btn add">+ Add Product</a>
+    <a href="add-product" class="topbar-btn add">+ Add Product</a>
     <a href="logout" class="topbar-btn logout">Logout &rarr;</a>
   </div>
 

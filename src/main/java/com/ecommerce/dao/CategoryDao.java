@@ -69,4 +69,26 @@ public class CategoryDao {
 		return Collections.emptyList();
 	}
 
+	public Category findCategoryById(int id) {
+		
+		EntityManager em = null;
+		
+		try {
+			em = HibernateUtil.getEMF().createEntityManager();
+			
+			Category category = em.find(Category.class, id);
+			
+			return category;
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}finally {
+
+			if (em != null && em.isOpen()) {
+				em.close();
+			}
+		}
+		
+		return null;
+	}
 }

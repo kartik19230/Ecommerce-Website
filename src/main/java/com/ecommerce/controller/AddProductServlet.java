@@ -9,7 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ecommerce.dao.CategoryDao;
 import com.ecommerce.dao.ProductDao;
+import com.ecommerce.model.Category;
 import com.ecommerce.model.Product;
 import com.ecommerce.validator.ProductValidation;
 
@@ -24,6 +26,9 @@ public class AddProductServlet extends HttpServlet{
 		String priceStr = req.getParameter("price");
 		String stockStr = req.getParameter("stock");
 		
+		int categoryId =
+		        Integer.parseInt(req.getParameter("categoryId"));
+		
 		List<String> errors = ProductValidation.validate(name, description, priceStr, stockStr);
 		
 		if (!errors.isEmpty()) {
@@ -34,16 +39,31 @@ public class AddProductServlet extends HttpServlet{
 			req.setAttribute("price", priceStr);
 			req.setAttribute("stock", stockStr);
 			
+			CategoryDao categoryDao = new CategoryDao();
+			
+			List<Category> categories = categoryDao.getAllCategories();
+			
+			req.setAttribute("categories", categories);
 			req.getRequestDispatcher("addProduct.jsp").forward(req, resp);
 			return;
 		}
 		
+		CategoryDao categoryDao = new CategoryDao();
+
+		Category category =
+		        categoryDao.findCategoryById(categoryId);
+		
 		Product product = new Product(name,description,Double.parseDouble(priceStr),Integer.parseInt(stockStr));
 		
 		ProductDao dao = new ProductDao();
+		
+		product.setCategory(category);
+		
 		Product p = dao.saveProduct(product);
 		
+		
 		if (p != null) {
+			
 			resp.sendRedirect("dashboard");
 		}else {
 			resp.getWriter().print("Unsuccessful Operation");;
