@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ecommerce.dao.CategoryDao;
 import com.ecommerce.dao.ProductDao;
+import com.ecommerce.model.Category;
 import com.ecommerce.model.Product;
 
 @WebServlet("/dashboard")
@@ -27,7 +29,7 @@ public class DashboardServlet extends HttpServlet{
 		int currentPage = 1;
 		int pageSize = 6;
 		
-		int totalPages = (int)Math.ceil((double)dao.getTotalProductsCount()/pageSize);
+		int totalPages = 1;
 
 		
 		if (pageParam != null) {
@@ -39,7 +41,19 @@ public class DashboardServlet extends HttpServlet{
 			
 		}
 		
+		List<Product> products;
 		
+		if (keyword != null && !keyword.trim().isEmpty()) {
+			
+			products = dao.searchProductWithPagination(keyword, currentPage, pageSize);
+			totalPages = (int) Math.ceil((double)dao.getTotalSearchProductsCount(keyword)/pageSize);
+		}
+		else {
+			products = dao.getProuductsWithPagination(currentPage, pageSize);
+			totalPages = (int)Math.ceil((double)dao.getTotalProductsCount()/pageSize);
+		}
+		
+
 		if (currentPage > totalPages) {
 			currentPage = totalPages;
 		}
@@ -47,15 +61,6 @@ public class DashboardServlet extends HttpServlet{
 			currentPage = 1;
 		}
 		
-		List<Product> products;
-		
-		if (keyword != null && !keyword.trim().isEmpty()) {
-			
-			products = dao.searchProduct(keyword);
-		}
-		else {
-			products = dao.getProuductsWithPagination(currentPage, pageSize);
-		}
 		
 		req.setAttribute("products", products);
 		req.setAttribute("currentPage", currentPage);

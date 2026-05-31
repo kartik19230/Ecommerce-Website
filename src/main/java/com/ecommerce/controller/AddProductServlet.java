@@ -9,7 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ecommerce.dao.CategoryDao;
 import com.ecommerce.dao.ProductDao;
+import com.ecommerce.model.Category;
 import com.ecommerce.model.Product;
 import com.ecommerce.validator.ProductValidation;
 
@@ -24,9 +26,33 @@ public class AddProductServlet extends HttpServlet{
 		String priceStr = req.getParameter("price");
 		String stockStr = req.getParameter("stock");
 		
+		Integer categoryId = null;
+		
 		List<String> errors = ProductValidation.validate(name, description, priceStr, stockStr);
 		
+		try {
+			categoryId = Integer.parseInt(req.getParameter("categoryId"));
+		} catch (NumberFormatException e) {
+			errors.add("Invalid Category Selected");
+		}
+		
+		CategoryDao categoryDao = new CategoryDao();		
+		Category category = null;
+		
+		if (categoryId != null) {
+
+			category = categoryDao.findCategoryById(categoryId);
+			
+			if (category == null) {
+				
+				errors.add("Invalid Category Selected");
+			}
+		}
+		
 		if (!errors.isEmpty()) {
+
+			List<Category> categories = categoryDao.getAllCategories();
+			req.setAttribute("categories", categories);
 			
 			req.setAttribute("errors", errors);
 			req.setAttribute("name", name);
@@ -34,19 +60,36 @@ public class AddProductServlet extends HttpServlet{
 			req.setAttribute("price", priceStr);
 			req.setAttribute("stock", stockStr);
 			
+			req.setAttribute("selectedCategoryId", categoryId);
+			
 			req.getRequestDispatcher("addProduct.jsp").forward(req, resp);
 			return;
 		}
 		
+		
 		Product product = new Product(name,description,Double.parseDouble(priceStr),Integer.parseInt(stockStr));
 		
 		ProductDao dao = new ProductDao();
+		
+		product.setCategory(category);
+		
 		Product p = dao.saveProduct(product);
 		
+		
 		if (p != null) {
+			
 			resp.sendRedirect("dashboard");
-		}else {
-			resp.getWriter().print("Unsuccessful Operation");;
+		}
+		else {
+			
+			errors.add("Unable to save Product");
+			
+			List<Category> categories = categoryDao.getAllCategories();
+			
+			req.setAttribute("categories", categories);
+			req.setAttribute("selectedCategoryId", categoryId);
+			
+			req.getRequestDispatcher("addProduct.jsp").forward(req, resp);
 		}
 		
 	}

@@ -221,4 +221,7 @@ Practiced:
 # Author
 
 Kartik Shinde
+<<<<<<< HEAD
 
+=======
+>>>>>>> feature/category-module

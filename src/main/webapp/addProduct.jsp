@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 pageEncoding="UTF-8"%>
@@ -238,6 +239,21 @@ pageEncoding="UTF-8"%>
         <label>Description</label>
         <textarea name="description" placeholder="Enter product description" required></textarea>
       </div>
+      
+      <label>Category</label>
+
+<select name="categoryId">
+
+    <c:forEach items="${categories}" var="category">
+
+        <option value="${category.id}">
+        	${category.id == selectedCategoryId ? 'selected' : ' ' }
+            ${category.name}
+        </option>
+
+    </c:forEach>
+
+</select>
 
       <div class="two-col">
         <div class="form-group">

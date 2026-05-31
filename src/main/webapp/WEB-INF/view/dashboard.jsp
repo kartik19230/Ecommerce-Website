@@ -418,7 +418,7 @@ pageEncoding="UTF-8"%>
   </form>
 
   <div class="topbar-actions">
-    <a href="addProduct.jsp" class="topbar-btn add">+ Add Product</a>
+    <a href="add-product" class="topbar-btn add">+ Add Product</a>
     <a href="logout" class="topbar-btn logout">Logout &rarr;</a>
   </div>
 
@@ -471,6 +471,16 @@ pageEncoding="UTF-8"%>
             <div class="p-card-id">#${product.id}</div>
             <div class="p-card-name">${product.name}</div>
             <div class="p-card-desc">${product.description}</div>
+            <div class="p-card-name">
+            <c:choose >
+            	<c:when test="${product.category != null}">
+            		${product.category.name}
+            	</c:when>
+            	<c:otherwise>
+            		No Category
+            	</c:otherwise>
+            </c:choose>
+            </div>
 
             <hr class="p-card-divider">
 
