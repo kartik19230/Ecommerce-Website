@@ -471,6 +471,16 @@ pageEncoding="UTF-8"%>
             <div class="p-card-id">#${product.id}</div>
             <div class="p-card-name">${product.name}</div>
             <div class="p-card-desc">${product.description}</div>
+            <div class="p-card-name">
+            <c:choose >
+            	<c:when test="${product.category != null}">
+            		${product.category.name}
+            	</c:when>
+            	<c:otherwise>
+            		No Category
+            	</c:otherwise>
+            </c:choose>
+            </div>
 
             <hr class="p-card-divider">
 

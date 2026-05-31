@@ -247,6 +247,7 @@ pageEncoding="UTF-8"%>
     <c:forEach items="${categories}" var="category">
 
         <option value="${category.id}">
+        	${category.id == selectedCategoryId ? 'selected' : ' ' }
             ${category.name}
         </option>
 
