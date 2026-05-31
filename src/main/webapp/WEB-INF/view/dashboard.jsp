@@ -1,525 +1,563 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 
-<%@ page import="java.util.List" %>
-<%@ page import="com.ecommerce.model.Product" %>
+<%@ page import="java.util.List"%>
+<%@ page import="com.ecommerce.model.Product"%>
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+	rel="stylesheet">
 <style>
+*, *::before, *::after {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
 
-  *, *::before, *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
+body {
+	font-family: 'Inter', sans-serif;
+	background: #f1f3f6;
+	color: #212121;
+	min-height: 100vh;
+}
 
-  body {
-    font-family: 'Inter', sans-serif;
-    background: #f1f3f6;
-    color: #212121;
-    min-height: 100vh;
-  }
+/* ── Top Navigation Bar ───────────────── */
+.topbar {
+	background: #2874f0;
+	padding: 0 2rem;
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	height: 56px;
+	position: sticky;
+	top: 0;
+	z-index: 100;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
 
-  /* ── Top Navigation Bar ───────────────── */
+.topbar-logo {
+	color: #fff;
+	font-size: 20px;
+	font-weight: 700;
+	letter-spacing: -0.5px;
+	white-space: nowrap;
+	font-style: italic;
+	text-decoration: none;
+}
 
-  .topbar {
-    background: #2874f0;
-    padding: 0 2rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    height: 56px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-  }
+.topbar-logo span {
+	color: #ffe500;
+}
 
-  .topbar-logo {
-    color: #fff;
-    font-size: 20px;
-    font-weight: 700;
-    letter-spacing: -0.5px;
-    white-space: nowrap;
-    font-style: italic;
-    text-decoration: none;
-  }
+.topbar-logo small {
+	font-size: 10px;
+	font-style: normal;
+	color: rgba(255, 255, 255, 0.65);
+	font-weight: 400;
+	margin-left: 4px;
+}
 
-  .topbar-logo span {
-    color: #ffe500;
-  }
+/* ── Search Bar ───────────────────────── */
+.search-wrap {
+	flex: 1;
+	max-width: 680px;
+	display: flex;
+	border-radius: 4px;
+	overflow: hidden;
+}
 
-  .topbar-logo small {
-    font-size: 10px;
-    font-style: normal;
-    color: rgba(255,255,255,0.65);
-    font-weight: 400;
-    margin-left: 4px;
-  }
+.search-wrap input {
+	flex: 1;
+	padding: 10px 14px;
+	border: none;
+	outline: none;
+	font-size: 14px;
+	color: #212121;
+	font-family: 'Inter', sans-serif;
+}
 
-  /* ── Search Bar ───────────────────────── */
+.search-wrap button {
+	background: #ffe500;
+	border: none;
+	padding: 0 18px;
+	cursor: pointer;
+	font-size: 16px;
+	transition: background 0.15s;
+}
 
-  .search-wrap {
-    flex: 1;
-    max-width: 680px;
-    display: flex;
-    border-radius: 4px;
-    overflow: hidden;
-  }
+.search-wrap button:hover {
+	background: #f0d800;
+}
 
-  .search-wrap input {
-    flex: 1;
-    padding: 10px 14px;
-    border: none;
-    outline: none;
-    font-size: 14px;
-    color: #212121;
-    font-family: 'Inter', sans-serif;
-  }
+/* ── Top Action Buttons ───────────────── */
+.topbar-actions {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	margin-left: auto;
+}
 
-  .search-wrap button {
-    background: #ffe500;
-    border: none;
-    padding: 0 18px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background 0.15s;
-  }
+.topbar-btn {
+	color: #fff;
+	text-decoration: none;
+	font-size: 13px;
+	font-weight: 500;
+	padding: 7px 12px;
+	border-radius: 3px;
+	transition: background 0.15s;
+	border: 1px solid transparent;
+	font-family: 'Inter', sans-serif;
+	white-space: nowrap;
+}
 
-  .search-wrap button:hover {
-    background: #f0d800;
-  }
+.topbar-btn:hover {
+	border-color: #fff;
+}
 
-  /* ── Top Action Buttons ───────────────── */
+.topbar-btn.add {
+	background: #ff9f00;
+	border-color: #ff9f00;
+	font-weight: 600;
+}
 
-  .topbar-actions {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-left: auto;
-  }
+.topbar-btn.add:hover {
+	background: #e8900a;
+	border-color: #e8900a;
+}
 
-  .topbar-btn {
-    color: #fff;
-    text-decoration: none;
-    font-size: 13px;
-    font-weight: 500;
-    padding: 7px 12px;
-    border-radius: 3px;
-    transition: background 0.15s;
-    border: 1px solid transparent;
-    font-family: 'Inter', sans-serif;
-    white-space: nowrap;
-  }
+.topbar-btn.logout {
+	border-color: rgba(255, 255, 255, 0.45);
+}
 
-  .topbar-btn:hover {
-    border-color: #fff;
-  }
+/* ── Stats Bar ────────────────────────── */
+.stats-bar {
+	background: #fff;
+	border-bottom: 1px solid #e0e0e0;
+	padding: 12px 2rem;
+	display: flex;
+	align-items: center;
+	gap: 0;
+}
 
-  .topbar-btn.add {
-    background: #ff9f00;
-    border-color: #ff9f00;
-    font-weight: 600;
-  }
+.stat-item {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 0 2rem 0 0;
+}
 
-  .topbar-btn.add:hover {
-    background: #e8900a;
-    border-color: #e8900a;
-  }
+.stat-item+.stat-item {
+	border-left: 1px solid #e0e0e0;
+	padding-left: 2rem;
+}
 
-  .topbar-btn.logout {
-    border-color: rgba(255,255,255,0.45);
-  }
+.stat-num {
+	font-size: 22px;
+	font-weight: 700;
+	color: #2874f0;
+	line-height: 1;
+}
 
-  /* ── Stats Bar ────────────────────────── */
+.stat-num.green {
+	color: #388e3c;
+}
 
-  .stats-bar {
-    background: #fff;
-    border-bottom: 1px solid #e0e0e0;
-    padding: 12px 2rem;
-    display: flex;
-    align-items: center;
-    gap: 0;
-  }
+.stat-num.red {
+	color: #f44336;
+}
 
-  .stat-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 0 2rem 0 0;
-  }
+.stat-lbl {
+	font-size: 11px;
+	color: #9e9e9e;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	line-height: 1.3;
+}
 
-  .stat-item + .stat-item {
-    border-left: 1px solid #e0e0e0;
-    padding-left: 2rem;
-  }
+.sys-online {
+	margin-left: auto;
+	font-size: 12px;
+	color: #388e3c;
+	font-weight: 600;
+	display: flex;
+	align-items: center;
+	gap: 5px;
+}
 
-  .stat-num {
-    font-size: 22px;
-    font-weight: 700;
-    color: #2874f0;
-    line-height: 1;
-  }
+.sys-online::before {
+	content: '';
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: #388e3c;
+	display: inline-block;
+	animation: blink 2s infinite;
+}
 
-  .stat-num.green { color: #388e3c; }
-  .stat-num.red   { color: #f44336; }
+@
+keyframes blink { 0%, 100% {
+	opacity: 1;
+}
 
-  .stat-lbl {
-    font-size: 11px;
-    color: #9e9e9e;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    line-height: 1.3;
-  }
+50
 
-  .sys-online {
-    margin-left: auto;
-    font-size: 12px;
-    color: #388e3c;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
 
-  .sys-online::before {
-    content: '';
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #388e3c;
-    display: inline-block;
-    animation: blink 2s infinite;
-  }
 
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50%       { opacity: 0.3; }
-  }
 
-  /* ── Main Content ─────────────────────── */
+%
+{
+opacity
 
-  .main {
-    padding: 1.5rem 2rem 3rem;
-  }
 
-  .section-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 1.2rem;
-  }
 
-  .section-title {
-    font-size: 18px;
-    font-weight: 700;
-    color: #212121;
-    padding-bottom: 6px;
-    border-bottom: 3px solid #2874f0;
-    display: inline-block;
-  }
 
-  .record-count {
-    font-size: 13px;
-    color: #9e9e9e;
-  }
+:
 
-  /* ── Product Grid ─────────────────────── */
 
-  .product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 1rem;
-  }
 
-  /* ── Product Card ─────────────────────── */
 
-  .p-card {
-    background: #fff;
-    border-radius: 4px;
-    padding: 1rem;
-    border: 1px solid #e0e0e0;
-    transition: box-shadow 0.2s;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    position: relative;
-  }
+0
 
-  .p-card:hover {
-    box-shadow: 0 4px 20px rgba(0,0,0,0.12);
-  }
 
-  .p-card-id {
-    font-size: 10px;
-    color: #bdbdbd;
-    font-family: monospace;
-    letter-spacing: 1px;
-  }
+.3
 
-  .p-card-name {
-    font-size: 15px;
-    font-weight: 700;
-    color: #212121;
-    line-height: 1.3;
-  }
 
-  .p-card-desc {
-    font-size: 12px;
-    color: #9e9e9e;
-    line-height: 1.5;
-    flex: 1;
-  }
+;
+}
+}
 
-  .p-card-divider {
-    border: none;
-    border-top: 1px solid #f0f0f0;
-  }
+/* ── Main Content ─────────────────────── */
+.main {
+	padding: 1.5rem 2rem 3rem;
+}
 
-  .p-card-price {
-    font-size: 20px;
-    font-weight: 700;
-    color: #212121;
-  }
+.section-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 1.2rem;
+}
 
-  .p-card-stock {
-    font-size: 12px;
-    color: #388e3c;
-    font-weight: 600;
-  }
+.section-title {
+	font-size: 18px;
+	font-weight: 700;
+	color: #212121;
+	padding-bottom: 6px;
+	border-bottom: 3px solid #2874f0;
+	display: inline-block;
+}
 
-  /* ── Card Action Buttons ──────────────── */
+.record-count {
+	font-size: 13px;
+	color: #9e9e9e;
+}
 
-  .p-card-actions {
-    display: flex;
-    gap: 8px;
-    margin-top: 4px;
-  }
+/* ── Product Grid ─────────────────────── */
+.product-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+	gap: 1rem;
+}
 
-  .btn-edit {
-    flex: 1;
-    padding: 8px;
-    background: #2874f0;
-    color: #fff;
-    border: none;
-    border-radius: 3px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    text-decoration: none;
-    text-align: center;
-    transition: background 0.15s;
-    font-family: 'Inter', sans-serif;
-  }
+/* ── Product Card ─────────────────────── */
+.p-card {
+	background: #fff;
+	border-radius: 4px;
+	padding: 1rem;
+	border: 1px solid #e0e0e0;
+	transition: box-shadow 0.2s;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	position: relative;
+}
 
-  .btn-edit:hover {
-    background: #1a5dc8;
-  }
+.p-card:hover {
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+}
 
-  .btn-del {
-    flex: 1;
-    padding: 8px;
-    background: #fff;
-    color: #f44336;
-    border: 1px solid #f44336;
-    border-radius: 3px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    text-decoration: none;
-    text-align: center;
-    transition: all 0.15s;
-    font-family: 'Inter', sans-serif;
-  }
+.p-card-id {
+	font-size: 10px;
+	color: #bdbdbd;
+	font-family: monospace;
+	letter-spacing: 1px;
+}
 
-  .btn-del:hover {
-    background: #f44336;
-    color: #fff;
-  }
+.p-card-name {
+	font-size: 15px;
+	font-weight: 700;
+	color: #212121;
+	line-height: 1.3;
+}
 
-  /* ── Empty State ──────────────────────── */
+.p-card-desc {
+	font-size: 12px;
+	color: #9e9e9e;
+	line-height: 1.5;
+	flex: 1;
+}
 
-  .empty-state {
-    grid-column: 1 / -1;
-    text-align: center;
-    padding: 4rem 2rem;
-    color: #9e9e9e;
-  }
+.p-card-divider {
+	border: none;
+	border-top: 1px solid #f0f0f0;
+}
 
-  .empty-state h3 {
-    font-size: 18px;
-    margin-bottom: 8px;
-    color: #bdbdbd;
-  }
+.p-card-price {
+	font-size: 20px;
+	font-weight: 700;
+	color: #212121;
+}
 
-  /* ── Footer ───────────────────────────── */
+.p-card-stock {
+	font-size: 12px;
+	color: #388e3c;
+	font-weight: 600;
+}
 
-  .sys-footer {
-    text-align: center;
-    padding: 1rem 2rem;
-    font-size: 11px;
-    color: #bdbdbd;
-    letter-spacing: 1px;
-    background: #fff;
-    border-top: 1px solid #e0e0e0;
-    margin-top: 2rem;
-  }
+/* ── Card Action Buttons ──────────────── */
+.p-card-actions {
+	display: flex;
+	gap: 8px;
+	margin-top: 4px;
+}
 
-.pagination{
+.btn-edit {
+	flex: 1;
+	padding: 8px;
+	background: #2874f0;
+	color: #fff;
+	border: none;
+	border-radius: 3px;
+	font-size: 13px;
+	font-weight: 600;
+	cursor: pointer;
+	text-decoration: none;
 	text-align: center;
-    padding: 1rem 2rem;
-    font-size: 11px;
-    color: #bdbdbd;
-    letter-spacing: 1px;
-    background: #fff;
-    border-top: 1px solid #e0e0e0;
-    margin-top: 2rem;
+	transition: background 0.15s;
+	font-family: 'Inter', sans-serif;
 }
 
-.page-link{
-    padding: 8px 14px;
-    text-decoration: none;
-    background: #f1f1f1;
-    color: #333;
-    border-radius: 6px;
-    font-weight: bold;
-    transition: 0.2s;
+.btn-edit:hover {
+	background: #1a5dc8;
 }
 
-.page-link:hover{
-    background: #dcdcdc;
+.btn-del {
+	flex: 1;
+	padding: 8px;
+	background: #fff;
+	color: #f44336;
+	border: 1px solid #f44336;
+	border-radius: 3px;
+	font-size: 13px;
+	font-weight: 600;
+	cursor: pointer;
+	text-decoration: none;
+	text-align: center;
+	transition: all 0.15s;
+	font-family: 'Inter', sans-serif;
 }
 
-.active-page{
-    background: #222;
-    color: white;
+.btn-del:hover {
+	background: #f44336;
+	color: #fff;
 }
 
+/* ── Empty State ──────────────────────── */
+.empty-state {
+	grid-column: 1/-1;
+	text-align: center;
+	padding: 4rem 2rem;
+	color: #9e9e9e;
+}
+
+.empty-state h3 {
+	font-size: 18px;
+	margin-bottom: 8px;
+	color: #bdbdbd;
+}
+
+/* ── Footer ───────────────────────────── */
+.sys-footer {
+	text-align: center;
+	padding: 1rem 2rem;
+	font-size: 11px;
+	color: #bdbdbd;
+	letter-spacing: 1px;
+	background: #fff;
+	border-top: 1px solid #e0e0e0;
+	margin-top: 2rem;
+}
+
+.pagination {
+	text-align: center;
+	padding: 1rem 2rem;
+	font-size: 11px;
+	color: #bdbdbd;
+	letter-spacing: 1px;
+	background: #fff;
+	border-top: 1px solid #e0e0e0;
+	margin-top: 2rem;
+}
+
+.page-link {
+	padding: 8px 14px;
+	text-decoration: none;
+	background: #f1f1f1;
+	color: #333;
+	border-radius: 6px;
+	font-weight: bold;
+	transition: 0.2s;
+}
+
+.page-link:hover {
+	background: #dcdcdc;
+}
+
+.active-page {
+	background: #222;
+	color: white;
+}
+
+.p-card {
+	cursor: pointer;
+}
 </style>
 </head>
 <body>
 
-<!-- ── Top Navigation Bar ───────────────────────── -->
-<div class="topbar">
+	<!-- ── Top Navigation Bar ───────────────────────── -->
+	<div class="topbar">
 
-  <a href="dashboard" class="topbar-logo">
-    Shop<span>Admin</span><small>panel</small>
-  </a>
+		<a href="dashboard" class="topbar-logo"> Shop<span>Admin</span><small>panel</small>
+		</a>
 
-  <form class="search-wrap" action="dashboard" method="get">
-    <input type="text" name="keyword" placeholder="Search products by name..." value="${param.keyword}">
-    <button type="submit">&#128269;</button>
-  </form>
+		<form class="search-wrap" action="dashboard" method="get">
+			<input type="text" name="keyword"
+				placeholder="Search products by name or categories..." value="${param.keyword}">
+			<button type="submit">&#128269;</button>
+		</form>
 
-  <div class="topbar-actions">
-    <a href="add-product" class="topbar-btn add">+ Add Product</a>
-    <a href="logout" class="topbar-btn logout">Logout &rarr;</a>
-  </div>
+		<div class="topbar-actions">
+			<a href="add-product" class="topbar-btn add">+ Add Product</a> <a
+				href="logout" class="topbar-btn logout">Logout &rarr;</a>
+		</div>
 
-</div>
+	</div>
 
-<!-- ── Stats Bar ─────────────────────────────────── -->
-<div class="stats-bar">
+	<!-- ── Stats Bar ─────────────────────────────────── -->
+	<div class="stats-bar">
 
-  <div class="stat-item">
-    <div class="stat-num">${empty products ? '0' : products.size()}</div>
-    <div class="stat-lbl">Total<br>Products</div>
-  </div>
+		<div class="stat-item">
+			<div class="stat-num">${empty products ? '0' : products.size()}</div>
+			<div class="stat-lbl">
+				Total<br>Products
+			</div>
+		</div>
 
-  <div class="stat-item">
-    <div class="stat-num green">${empty products ? '0' : products.size()}</div>
-    <div class="stat-lbl">Records<br>Loaded</div>
-  </div>
+		<div class="stat-item">
+			<div class="stat-num green">${empty products ? '0' : products.size()}</div>
+			<div class="stat-lbl">
+				Records<br>Loaded
+			</div>
+		</div>
 
-  <div class="stat-item">
-    <div class="stat-num" style="color:#ff9f00">Admin</div>
-    <div class="stat-lbl">Active<br>Session</div>
-  </div>
+		<div class="stat-item">
+			<div class="stat-num" style="color: #ff9f00">Admin</div>
+			<div class="stat-lbl">
+				Active<br>Session
+			</div>
+		</div>
 
-  <div class="sys-online">SYSTEM ONLINE</div>
+		<div class="sys-online">SYSTEM ONLINE</div>
 
-</div>
+	</div>
 
-<!-- ── Main Content ──────────────────────────────── -->
-<div class="main">
+	<!-- ── Main Content ──────────────────────────────── -->
+	<div class="main">
 
-  <div class="section-header">
-    <span class="section-title">All Products</span>
-    <span class="record-count">${empty products ? '0' : products.size()} records found</span>
-  </div>
+		<div class="section-header">
+			<span class="section-title">All Products</span> <span
+				class="record-count">${empty products ? '0' : products.size()}
+				records found</span>
+		</div>
 
-  <!-- Product Card Grid -->
-  <div class="product-grid">
+		<!-- Product Card Grid -->
 
-    <c:choose>
-      <c:when test="${empty products}">
-        <div class="empty-state">
-          <h3>No products found</h3>
-          <p>Try a different search or <a href="addProduct.jsp" style="color:#2874f0">add a new product</a>.</p>
-        </div>
-      </c:when>
-      <c:otherwise>
-        <c:forEach var="product" items="${products}">
-          <div class="p-card">
+		<div class="product-grid">
 
-            <div class="p-card-id">#${product.id}</div>
-            <div class="p-card-name">${product.name}</div>
-            <div class="p-card-desc">${product.description}</div>
-            <div class="p-card-name">
-            <c:choose >
-            	<c:when test="${product.category != null}">
+			<c:choose>
+				<c:when test="${empty products}">
+					<div class="empty-state">
+						<h3>No products found</h3>
+						<p>
+							Try a different search or <a href="addProduct.jsp"
+								style="color: #2874f0">add a new product</a>.
+						</p>
+					</div>
+
+
+				</c:when>
+				<c:otherwise>
+					<c:forEach var="product" items="${products}">
+						<div class="p-card"
+							onclick="window.location='product-details?id=${product.id}'">
+
+							<div class="p-card-id">#${product.id}</div>
+							<div class="p-card-name">${product.name}</div>
+							<div class="p-card-desc">${product.description}</div>
+							<div class="p-card-name">
+								<c:choose>
+									<c:when test="${product.category != null}">
             		${product.category.name}
             	</c:when>
-            	<c:otherwise>
+									<c:otherwise>
             		No Category
             	</c:otherwise>
-            </c:choose>
-            </div>
+								</c:choose>
+							</div>
 
-            <hr class="p-card-divider">
+							<hr class="p-card-divider">
 
-            <div class="p-card-price">&#8377;${product.price}</div>
-            <div class="p-card-stock">In Stock: ${product.stock} units</div>
+							<div class="p-card-price">&#8377;${product.price}</div>
+							<div class="p-card-stock">In Stock: ${product.stock} units</div>
 
-            <div class="p-card-actions">
-              <a href="editProduct?id=${product.id}" class="btn-edit">Edit</a>
-              <a href="deleteProduct?id=${product.id}" class="btn-del">Delete</a>
-            </div>
+							<div class="p-card-actions">
+								<a href="editProduct?id=${product.id}" class="btn-edit"
+									onclick="event.stopPropagation()"> Edit </a> <a
+									href="deleteProduct?id=${product.id}" class="btn-del"
+									onclick="event.stopPropagation()"> Delete </a>
+							</div>
+						</div>
+					</c:forEach>
+				</c:otherwise>
+			</c:choose>
 
-          </div>
-        </c:forEach>
-      </c:otherwise>
-    </c:choose>
+		</div>
+	</div>
 
-  </div>
-</div>
-<div class="pagination">
 
-<c:forEach begin="1"
-           end="${totalPages}"
-           var="i">
+	<div class="pagination">
 
-    <a href="dashboard?page=${i}"
-       class="page-link ${i == currentPage ? 'active-page' : ''}">
+		<c:forEach begin="1" end="${totalPages}" var="i">
 
-        ${i}
+			<a href="dashboard?page=${i}"
+				class="page-link ${i == currentPage ? 'active-page' : ''}"> ${i}
 
-    </a>
+			</a>
 
-</c:forEach>
+		</c:forEach>
 
-</div>
+	</div>
 
-<!-- ── Footer ────────────────────────────────────── -->
-<div class="sys-footer">
-  ECOMMERCE ADMIN PANEL &nbsp;&bull;&nbsp; ${empty products ? '0' : products.size()} RECORDS LOADED
-</div>
+	<!-- ── Footer ────────────────────────────────────── -->
+	<div class="sys-footer">ECOMMERCE ADMIN PANEL &nbsp;&bull;&nbsp;
+		${empty products ? '0' : products.size()} RECORDS LOADED</div>
 
 </body>
 </html>

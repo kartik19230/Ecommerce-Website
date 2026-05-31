@@ -224,4 +224,3 @@ Kartik Shinde
 <<<<<<< HEAD
 
 =======
->>>>>>> feature/category-module
