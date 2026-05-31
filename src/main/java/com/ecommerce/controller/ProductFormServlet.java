@@ -21,8 +21,6 @@ public class ProductFormServlet extends HttpServlet{
 		CategoryDao categoryDao = new CategoryDao();
 
 		List<Category> categories = categoryDao.getAllCategories();
-		
-		System.out.println("successfully run");
 
 		req.setAttribute("categories", categories);
 

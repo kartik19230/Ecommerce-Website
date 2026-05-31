@@ -189,7 +189,9 @@ public class ProductDao {
 
 			em = HibernateUtil.getEMF().createEntityManager();
 
-			String hql = "Select p From Product p Where Lower(p.name) Like Lower(:keyword)";
+			String hql = "Select p From Product p "
+					+ "Where Lower(p.name) Like Lower(:keyword)";
+			
 
 			TypedQuery<Product> query = em.createQuery(hql, Product.class);
 
@@ -278,7 +280,9 @@ public class ProductDao {
 
 			em = HibernateUtil.getEMF().createEntityManager();
 
-			String hql = "Select Count(p) From Product p Where Lower(p.name) Like Lower(:keyword)";
+			String hql = "Select Count(p) From Product p "
+					+ "Where Lower(p.name) Like Lower(:keyword)"
+					+ "Or Lower(p.category.name) Like Lower(:keyword)";
 
 			TypedQuery<Long> query = em.createQuery(hql, Long.class);
 
@@ -308,7 +312,9 @@ public class ProductDao {
 
 			em = HibernateUtil.getEMF().createEntityManager();
 
-			String hql = "Select p From Product p Where Lower(p.name) Like Lower(:keyword)";
+			String hql = "Select p From Product p "
+					+ "Where Lower(p.name) Like Lower(:keyword)"
+					+ "Or Lower(p.category.name) Like Lower(:keyword)";
 
 			TypedQuery<Product> query = em.createQuery(hql, Product.class);
 			
