@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html>
 <html>
@@ -7,243 +7,179 @@
 <meta charset="UTF-8">
 <title>Shopping Cart</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
 <style>
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+body {
+	font-family: Arial, sans-serif;
+	background: #f5f5f5;
+	margin: 0;
+	padding: 0;
 }
 
-body{
-    font-family:'Inter',sans-serif;
-    background:#f1f3f6;
-    color:#212121;
+.container {
+	width: 90%;
+	max-width: 1000px;
+	margin: 40px auto;
 }
 
-.topbar{
-    background:#2874f0;
-    height:56px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0 2rem;
+.header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 20px;
 }
 
-.logo{
-    color:white;
-    text-decoration:none;
-    font-size:20px;
-    font-weight:700;
+.header h1 {
+	margin: 0;
 }
 
-.logo span{
-    color:#ffe500;
+.btn {
+	text-decoration: none;
+	background: #2874f0;
+	color: white;
+	padding: 10px 16px;
+	border-radius: 5px;
 }
 
-.cart-container{
-    max-width:1200px;
-    margin:2rem auto;
-    padding:0 1rem;
+.cart-table {
+	width: 100%;
+	border-collapse: collapse;
+	background: white;
 }
 
-.page-title{
-    font-size:28px;
-    font-weight:700;
-    margin-bottom:1.5rem;
+.cart-table th, .cart-table td {
+	padding: 15px;
+	border: 1px solid #ddd;
+	text-align: left;
 }
 
-.cart-wrapper{
-    display:grid;
-    grid-template-columns: 2fr 1fr;
-    gap:1.5rem;
+.cart-table th {
+	background: #2874f0;
+	color: white;
 }
 
-.cart-items{
-    background:white;
-    border-radius:8px;
-    overflow:hidden;
-    box-shadow:0 2px 10px rgba(0,0,0,0.08);
+.total-section {
+	margin-top: 20px;
+	background: white;
+	padding: 20px;
+	text-align: right;
+	border: 1px solid #ddd;
 }
 
-.cart-header{
-    background:#fafafa;
-    padding:1rem;
-    border-bottom:1px solid #eee;
-    font-weight:600;
+.total-price {
+	font-size: 24px;
+	font-weight: bold;
+	color: #2874f0;
 }
 
-.cart-item{
-    display:grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
-    align-items:center;
-    padding:1rem;
-    border-bottom:1px solid #f0f0f0;
+.empty-cart {
+	background: white;
+	padding: 50px;
+	text-align: center;
+	border: 1px solid #ddd;
 }
 
-.cart-item:last-child{
-    border-bottom:none;
+.category {
+	color: #666;
+	font-size: 14px;
 }
-
-.product-name{
-    font-weight:600;
-}
-
-.price{
-    color:#2874f0;
-    font-weight:600;
-}
-
-.quantity{
-    text-align:center;
-}
-
-.subtotal{
-    font-weight:700;
-}
-
-.summary{
-    background:white;
-    border-radius:8px;
-    padding:1.5rem;
-    height:fit-content;
-    box-shadow:0 2px 10px rgba(0,0,0,0.08);
-}
-
-.summary-title{
-    font-size:18px;
-    font-weight:700;
-    margin-bottom:1rem;
-}
-
-.summary-row{
-    display:flex;
-    justify-content:space-between;
-    margin-bottom:1rem;
-}
-
-.total{
-    border-top:1px solid #eee;
-    padding-top:1rem;
-    font-size:20px;
-    font-weight:700;
-}
-
-.btn{
-    display:block;
-    width:100%;
-    padding:12px;
-    border:none;
-    border-radius:4px;
-    font-weight:600;
-    cursor:pointer;
-    text-decoration:none;
-    text-align:center;
-    margin-top:1rem;
-}
-
-.btn-primary{
-    background:#2874f0;
-    color:white;
-}
-
-.btn-primary:hover{
-    background:#1a5dc8;
-}
-
-.btn-secondary{
-    background:#f1f3f6;
-    color:#212121;
-}
-
-.btn-secondary:hover{
-    background:#e0e0e0;
-}
-
-.empty-cart{
-    background:white;
-    padding:3rem;
-    text-align:center;
-    border-radius:8px;
-    box-shadow:0 2px 10px rgba(0,0,0,0.08);
-}
-
 </style>
 
 </head>
 <body>
 
-<div class="topbar">
-    <a href="dashboard" class="logo">
-        Shop<span>Admin</span>
-    </a>
+	<div class="container">
 
-    <a href="dashboard" style="color:white;text-decoration:none;">
-        Continue Shopping
-    </a>
-</div>
+		<div class="header">
+			<h1>Shopping Cart</h1>
 
-<div class="cart-container">
+			<a href="dashboard" class="btn"> Continue Shopping </a>
+		</div>
 
-    <h1 class="page-title">Shopping Cart</h1>
+		<c:choose>
 
-    <!-- REMOVE THIS SECTION LATER WHEN JSTL IS ADDED -->
+			<c:when test="${empty cart.items}">
 
-    <div class="cart-wrapper">
+				<div class="empty-cart">
 
-        <div class="cart-items">
+					<h2>Your Cart Is Empty</h2>
 
-            <div class="cart-header">
-                Cart Items
-            </div>
+					<p>Add some products to get started.</p>
 
-            <div class="cart-item">
-                <div class="product-name">iPhone 17</div>
-                <div class="price">₹120000</div>
-                <div class="quantity">2</div>
-                <div class="subtotal">₹240000</div>
-            </div>
+				</div>
 
-            <div class="cart-item">
-                <div class="product-name">Sony Headphones</div>
-                <div class="price">₹10000</div>
-                <div class="quantity">1</div>
-                <div class="subtotal">₹10000</div>
-            </div>
+			</c:when>
 
-        </div>
+			<c:otherwise>
 
-        <div class="summary">
+				<table class="cart-table">
 
-            <div class="summary-title">
-                Order Summary
-            </div>
+					<thead>
+						<tr>
+							<th>Product</th>
+							<th>Category</th>
+							<th>Price</th>
+							<th>Quantity</th>
+							<th>Subtotal</th>
+							<th>Action</th>
+						</tr>
+					</thead>
 
-            <div class="summary-row">
-                <span>Total Items</span>
-                <span>3</span>
-            </div>
+					<tbody>
 
-            <div class="summary-row total">
-                <span>Total</span>
-                <span>₹250000</span>
-            </div>
+						<c:forEach var="item" items="${cart.items.values()}">
 
-            <a href="dashboard" class="btn btn-secondary">
-                Continue Shopping
-            </a>
+							<tr>
 
-            <a href="#" class="btn btn-primary">
-                Checkout
-            </a>
+								<td>${item.product.name}</td>
 
-        </div>
+								<td><c:choose>
 
-    </div>
+										<c:when test="${item.product.category != null}">
+                                        ${item.product.category.name}
+                                    </c:when>
 
-</div>
+										<c:otherwise>
+                                        N/A
+                                    </c:otherwise>
+
+									</c:choose></td>
+
+								<td>₹${item.product.price}</td>
+
+								<td>${item.quantity}</td>
+
+								<td>₹${item.totalPrice}</td>
+
+								<td><a href="remove-from-cart?productId=${item.product.id}">Remove</a>
+								</td>
+
+								<td><a
+									href="decrease-quantity?productId=${item.product.id}"> - </a>
+
+									${item.quantity} <a
+									href="increase-quantity?productId=${item.product.id}"> + </a></td>
+
+							</tr>
+
+						</c:forEach>
+
+					</tbody>
+
+				</table>
+
+				<div class="total-section">
+
+					<h3>Total Items: ${cart.totalItems}</h3>
+
+					<div class="total-price">₹${cart.calculateTotal()}</div>
+
+				</div>
+
+			</c:otherwise>
+
+		</c:choose>
+
+	</div>
 
 </body>
 </html>

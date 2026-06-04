@@ -210,9 +210,13 @@ keyframes blink { 0%, 100% {
 
 
 
+
+
 %
 {
 opacity
+
+
 
 
 
@@ -222,10 +226,16 @@ opacity
 
 
 
+
+
 0
 
 
+
+
 .3
+
+
 
 
 ;
@@ -439,13 +449,15 @@ opacity
 
 		<form class="search-wrap" action="dashboard" method="get">
 			<input type="text" name="keyword"
-				placeholder="Search products by name or categories..." value="${param.keyword}">
+				placeholder="Search products by name or categories..."
+				value="${param.keyword}">
 			<button type="submit">&#128269;</button>
 		</form>
 
 		<div class="topbar-actions">
 			<a href="add-product" class="topbar-btn add">+ Add Product</a> <a
-				href="logout" class="topbar-btn logout">Logout &rarr;</a>
+				href="logout" class="topbar-btn logout">Logout &rarr;</a> <a
+				href="cart" class="topbar-btn"> Cart </a>
 		</div>
 
 	</div>
