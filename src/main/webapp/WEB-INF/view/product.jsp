@@ -1,402 +1,498 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Product Details</title>
-<link
-	href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-	rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after {
-	box-sizing: border-box;
-	margin: 0;
-	padding: 0;
-}
 
-body {
-	font-family: 'Inter', sans-serif;
-	background: #f1f3f6;
-	min-height: 100vh;
-}
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
 
-/* ── Top Nav ──────────────────────────── */
-.topbar {
-	background: #2874f0;
-	padding: 0 2rem;
-	height: 56px;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-}
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #f1f3f6;
+    min-height: 100vh;
+  }
 
-.topbar-logo {
-	font-size: 20px;
-	font-weight: 700;
-	font-style: italic;
-	color: #fff;
-	text-decoration: none;
-	letter-spacing: -0.5px;
-}
+  /* ── Top Nav ──────────────────────────── */
 
-.topbar-logo span {
-	color: #ffe500;
-}
+  .topbar {
+    background: #2874f0;
+    padding: 0 2rem;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
 
-.topbar-back {
-	color: #fff;
-	font-size: 13px;
-	font-weight: 500;
-	text-decoration: none;
-	border: 1px solid rgba(255, 255, 255, 0.45);
-	padding: 6px 14px;
-	border-radius: 3px;
-	transition: background 0.15s;
-}
+  .topbar-logo {
+    font-size: 20px;
+    font-weight: 700;
+    font-style: italic;
+    color: #fff;
+    text-decoration: none;
+    letter-spacing: -0.5px;
+  }
 
-.topbar-back:hover {
-	background: rgba(255, 255, 255, 0.12);
-}
+  .topbar-logo span { color: #ffe500; }
 
-/* ── Page Wrapper ─────────────────────── */
-.page-wrap {
-	max-width: 860px;
-	margin: 2rem auto;
-	padding: 0 1.5rem;
-}
+  .topbar-back {
+    color: #fff;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.45);
+    padding: 6px 14px;
+    border-radius: 3px;
+    transition: background 0.15s;
+  }
 
-/* ── Breadcrumb ───────────────────────── */
-.breadcrumb {
-	font-size: 12px;
-	color: #9e9e9e;
-	margin-bottom: 1rem;
-}
+  .topbar-back:hover { background: rgba(255,255,255,0.12); }
 
-.breadcrumb a {
-	color: #2874f0;
-	text-decoration: none;
-}
+  /* ── Page Wrapper ─────────────────────── */
 
-.breadcrumb a:hover {
-	text-decoration: underline;
-}
+  .page-wrap {
+    max-width: 860px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+  }
 
-/* ── Two-Column Layout ────────────────── */
-.product-layout {
-	display: grid;
-	grid-template-columns: 1fr 320px;
-	gap: 1.2rem;
-	align-items: start;
-}
+  /* ── Breadcrumb ───────────────────────── */
 
-/* ── Shared Card Base ─────────────────── */
-.card-main, .card-side {
-	background: #fff;
-	border: 1px solid #e0e0e0;
-	border-radius: 4px;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-}
+  .breadcrumb {
+    font-size: 12px;
+    color: #9e9e9e;
+    margin-bottom: 1rem;
+  }
 
-/* ── Left Card ────────────────────────── */
-.card-main {
-	padding: 2rem;
-}
+  .breadcrumb a { color: #2874f0; text-decoration: none; }
+  .breadcrumb a:hover { text-decoration: underline; }
 
-.product-title {
-	font-size: 24px;
-	font-weight: 700;
-	color: #212121;
-	line-height: 1.3;
-	margin-bottom: 6px;
-}
+  /* ── Two-Column Layout ────────────────── */
 
-.product-id {
-	font-size: 11px;
-	color: #9e9e9e;
-	font-family: monospace;
-	letter-spacing: 1.5px;
-	text-transform: uppercase;
-	margin-bottom: 1rem;
-}
+  .product-layout {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 1.2rem;
+    align-items: start;
+  }
 
-.category-tag {
-	display: inline-block;
-	background: #e8f0fe;
-	color: #2874f0;
-	font-size: 12px;
-	font-weight: 600;
-	padding: 3px 10px;
-	border-radius: 3px;
-	border: 1px solid #c5d8fd;
-	margin-bottom: 1.4rem;
-}
+  /* ── Shared Card Base ─────────────────── */
 
-.section-divider {
-	border: none;
-	border-top: 1px solid #f0f0f0;
-	margin: 1.2rem 0;
-}
+  .card-main, .card-side {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
 
-.field-label {
-	font-size: 11px;
-	color: #9e9e9e;
-	text-transform: uppercase;
-	letter-spacing: 1px;
-	font-weight: 600;
-	margin-bottom: 5px;
-}
+  /* ── Left Card ────────────────────────── */
 
-.field-value {
-	font-size: 15px;
-	color: #212121;
-}
+  .card-main { padding: 2rem; }
 
-.desc-text {
-	font-size: 14px;
-	color: #616161;
-	line-height: 1.8;
-}
+  .product-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #212121;
+    line-height: 1.3;
+    margin-bottom: 6px;
+  }
 
-.meta-grid {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	gap: 1rem;
-}
+  .product-id {
+    font-size: 11px;
+    color: #9e9e9e;
+    font-family: monospace;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
 
-/* ── Right Card ───────────────────────── */
-.card-side {
-	padding: 1.5rem;
-	display: flex;
-	flex-direction: column;
-	gap: 1rem;
-}
+  .category-tag {
+    display: inline-block;
+    background: #e8f0fe;
+    color: #2874f0;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 3px;
+    border: 1px solid #c5d8fd;
+    margin-bottom: 1.4rem;
+  }
 
-.side-divider {
-	border: none;
-	border-top: 1px solid #f0f0f0;
-}
+  .section-divider {
+    border: none;
+    border-top: 1px solid #f0f0f0;
+    margin: 1.2rem 0;
+  }
 
-.side-label {
-	font-size: 11px;
-	color: #9e9e9e;
-	text-transform: uppercase;
-	letter-spacing: 1px;
-	font-weight: 600;
-	margin-bottom: 4px;
-}
+  .field-label {
+    font-size: 11px;
+    color: #9e9e9e;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
 
-/* ── Price ────────────────────────────── */
-.price-big {
-	font-size: 32px;
-	font-weight: 700;
-	color: #212121;
-}
+  .field-value { font-size: 15px; color: #212121; }
 
-.price-currency {
-	font-size: 16px;
-	font-weight: 500;
-	vertical-align: super;
-}
+  .desc-text {
+    font-size: 14px;
+    color: #616161;
+    line-height: 1.8;
+  }
 
-/* ── Stock ────────────────────────────── */
-.stock-badge {
-	display: inline-flex;
-	align-items: center;
-	gap: 5px;
-	font-size: 13px;
-	font-weight: 600;
-	color: #388e3c;
-}
+  .meta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
 
-.stock-badge::before {
-	content: '';
-	width: 8px;
-	height: 8px;
-	border-radius: 50%;
-	background: #388e3c;
-	display: inline-block;
-	animation: blink 2s infinite;
-}
+  /* ── Right Card ───────────────────────── */
 
-@
-keyframes blink { 0%, 100% {
-	opacity: 1;
-}
+  .card-side {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
 
-50
-%
-{
-opacity
-:
-0.3;
-}
-}
-.stock-units {
-	font-size: 12px;
-	color: #9e9e9e;
-	margin-top: 3px;
-}
+  .side-divider {
+    border: none;
+    border-top: 1px solid #f0f0f0;
+  }
 
-.delivery-note {
-	font-size: 12px;
-	color: #388e3c;
-	font-weight: 500;
-}
+  .side-label {
+    font-size: 11px;
+    color: #9e9e9e;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
 
-/* ── Side Buttons ─────────────────────── */
-.btn-primary {
-	display: block;
-	width: 100%;
-	padding: 11px;
-	background: #ff9f00;
-	color: #fff;
-	border: none;
-	border-radius: 3px;
-	font-size: 14px;
-	font-weight: 700;
-	text-align: center;
-	text-decoration: none;
-	cursor: pointer;
-	transition: background 0.15s;
-	font-family: 'Inter', sans-serif;
-}
+  /* ── Price ────────────────────────────── */
 
-.btn-primary:hover {
-	background: #e8900a;
-}
+  .price-big {
+    font-size: 32px;
+    font-weight: 700;
+    color: #212121;
+  }
 
-.btn-secondary {
-	display: block;
-	width: 100%;
-	padding: 10px;
-	background: #fff;
-	color: #2874f0;
-	border: 1px solid #2874f0;
-	border-radius: 3px;
-	font-size: 14px;
-	font-weight: 600;
-	text-align: center;
-	text-decoration: none;
-	transition: background 0.15s;
-	font-family: 'Inter', sans-serif;
-}
+  .price-currency {
+    font-size: 16px;
+    font-weight: 500;
+    vertical-align: super;
+  }
 
-.btn-secondary:hover {
-	background: #e8f0fe;
-}
+  /* ── Stock ────────────────────────────── */
 
-/* ── Footer ───────────────────────────── */
-.sys-footer {
-	text-align: center;
-	padding: 1rem;
-	font-size: 11px;
-	color: #bdbdbd;
-	letter-spacing: 0.5px;
-	background: #fff;
-	border-top: 1px solid #e0e0e0;
-	margin-top: 2rem;
-}
+  .stock-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #388e3c;
+  }
 
-/* ── Responsive ───────────────────────── */
-@media ( max-width : 680px) {
-	.product-layout {
-		grid-template-columns: 1fr;
-	}
-}
+  .stock-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #388e3c;
+    display: inline-block;
+    animation: blink 2s infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.3; }
+  }
+
+  .stock-units {
+    font-size: 12px;
+    color: #9e9e9e;
+    margin-top: 3px;
+  }
+
+  .delivery-note {
+    font-size: 12px;
+    color: #388e3c;
+    font-weight: 500;
+  }
+
+  /* ── Cart Form Block ──────────────────── */
+
+  .cart-form-block {
+    background: #f9fafc;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 1rem;
+  }
+
+  .cart-form-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: #9e9e9e;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+
+  .qty-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .qty-row label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #212121;
+    white-space: nowrap;
+  }
+
+  /* ── Quantity Stepper ─────────────────── */
+
+  .qty-control {
+    display: flex;
+    align-items: center;
+    border: 1px solid #e0e0e0;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .qty-btn {
+    width: 32px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 700;
+    color: #2874f0;
+    background: #f1f3f6;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s;
+    flex-shrink: 0;
+    line-height: 1;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .qty-btn:hover { background: #e8f0fe; }
+
+  .qty-input {
+    width: 48px;
+    height: 36px;
+    border: none;
+    border-left: 1px solid #e0e0e0;
+    border-right: 1px solid #e0e0e0;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: #212121;
+    outline: none;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .qty-input::-webkit-inner-spin-button,
+  .qty-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+  }
+
+  /* ── Buttons ──────────────────────────── */
+
+  .btn-cart {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background: #2874f0;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.15s;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.3px;
+  }
+
+  .btn-cart:hover { background: #1a5dc8; }
+
+  .btn-primary {
+    display: block;
+    width: 100%;
+    padding: 11px;
+    background: #ff9f00;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.15s;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .btn-primary:hover { background: #e8900a; }
+
+  .btn-secondary {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background: #fff;
+    color: #2874f0;
+    border: 1px solid #2874f0;
+    border-radius: 3px;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    transition: background 0.15s;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .btn-secondary:hover { background: #e8f0fe; }
+
+  /* ── Footer ───────────────────────────── */
+
+  .sys-footer {
+    text-align: center;
+    padding: 1rem;
+    font-size: 11px;
+    color: #bdbdbd;
+    letter-spacing: 0.5px;
+    background: #fff;
+    border-top: 1px solid #e0e0e0;
+    margin-top: 2rem;
+  }
+
+  /* ── Responsive ───────────────────────── */
+
+  @media (max-width: 680px) {
+    .product-layout { grid-template-columns: 1fr; }
+  }
+
 </style>
 </head>
 <body>
 
-	<!-- Top Nav -->
-	<div class="topbar">
-		<a href="dashboard" class="topbar-logo">Shop<span>Admin</span></a> <a
-			href="dashboard" class="topbar-back">&larr; Back to Dashboard</a>
-	</div>
+<!-- Top Nav -->
+<div class="topbar">
+  <a href="dashboard" class="topbar-logo">Shop<span>Admin</span></a>
+  <a href="dashboard" class="topbar-back">&larr; Back to Dashboard</a>
+</div>
 
-	<!-- Page Content -->
-	<div class="page-wrap">
+<!-- Page Content -->
+<div class="page-wrap">
 
-		<div class="breadcrumb">
-			<a href="dashboard">Dashboard</a> &rsaquo; Product Details
-		</div>
+  <div class="breadcrumb">
+    <a href="dashboard">Dashboard</a> &rsaquo; Product Details
+  </div>
 
-		<div class="product-layout">
+  <div class="product-layout">
 
-			<!-- ── Left: Main Info ─────────────── -->
-			<div class="card-main">
+    <!-- Left: Main Info -->
+    <div class="card-main">
 
-				<div class="product-title">${product.name}</div>
-				<div class="product-id">PRODUCT ID &nbsp;#${product.id}</div>
-				<div>
-					<span class="category-tag">${product.category.name}</span>
-				</div>
+      <div class="product-title">${product.name}</div>
+      <div class="product-id">PRODUCT ID &nbsp;#${product.id}</div>
+      <div><span class="category-tag">${product.category.name}</span></div>
 
-				<hr class="section-divider">
+      <hr class="section-divider">
 
-				<div class="field-label">Description</div>
-				<div class="desc-text">${product.description}</div>
+      <div class="field-label">Description</div>
+      <div class="desc-text">${product.description}</div>
 
-				<hr class="section-divider">
+      <hr class="section-divider">
 
-				<div class="meta-grid">
-					<div>
-						<div class="field-label">Product ID</div>
-						<div class="field-value" style="font-family: monospace">#${product.id}</div>
-					</div>
-					<div>
-						<div class="field-label">Category</div>
-						<div class="field-value">${product.category.name}</div>
-					</div>
-				</div>
+      <div class="meta-grid">
+        <div>
+          <div class="field-label">Product ID</div>
+          <div class="field-value" style="font-family:monospace">#${product.id}</div>
+        </div>
+        <div>
+          <div class="field-label">Category</div>
+          <div class="field-value">${product.category.name}</div>
+        </div>
+      </div>
 
-			</div>
+    </div>
 
-			<!-- ── Right: Price / Stock / Actions ─ -->
-			<div class="card-side">
+    <!-- Right: Price / Stock / Cart / Actions -->
+    <div class="card-side">
 
-				<div>
-					<div class="side-label">Price</div>
-					<div class="price-big">
-						<span class="price-currency">&#8377;</span>${product.price}</div>
-				</div>
+      <div>
+        <div class="side-label">Price</div>
+        <div class="price-big"><span class="price-currency">&#8377;</span>${product.price}</div>
+      </div>
 
-				<hr class="side-divider">
+      <hr class="side-divider">
 
-				<div>
-					<div class="side-label">Availability</div>
-					<div class="stock-badge">In Stock</div>
-					<div class="stock-units">${product.stock}units available</div>
-				</div>
+      <div>
+        <div class="side-label">Availability</div>
+        <div class="stock-badge">
+          <span class="stock-dot"></span>In Stock
+        </div>
+        <div class="stock-units">${product.stock} units available</div>
+      </div>
 
-				<hr class="side-divider">
+      <hr class="side-divider">
 
-				<div class="delivery-note">&#10003; Free delivery available</div>
+      <div class="delivery-note">&#10003; Free delivery available</div>
 
-				<a href="editProduct?id=${product.id}" class="btn-primary">&#9998;
-					Edit Product</a> <a href="dashboard" class="btn-secondary">&larr;
-					Back to Dashboard</a>
+      <hr class="side-divider">
 
-			</div>
+      <!-- Cart Form -->
+      <div class="cart-form-block">
+        <div class="cart-form-title">Add to Cart</div>
+        <form action="add-to-cart" method="post">
+          <input type="hidden" name="productId" value="${product.id}">
+          <div class="qty-row">
+            <label>Quantity:</label>
+            <div class="qty-control">
+              <button type="button" class="qty-btn"
+                onclick="var i=document.getElementById('qty-input');if(parseInt(i.value)>1)i.value=parseInt(i.value)-1">
+                &#8722;
+              </button>
+              <input id="qty-input" class="qty-input"
+                type="number" name="quantity" min="1" value="1">
+              <button type="button" class="qty-btn"
+                onclick="var i=document.getElementById('qty-input');i.value=parseInt(i.value)+1">
+                &#43;
+              </button>
+            </div>
+          </div>
+          <button type="submit" class="btn-cart">&#128722; Add to Cart</button>
+        </form>
+      </div>
 
-			<form action="add-to-cart" method="post">
+      <a href="editProduct?id=${product.id}" class="btn-primary">&#9998; Edit Product</a>
+      <a href="dashboard" class="btn-secondary">&larr; Back to Dashboard</a>
 
-				<input type="hidden" name="productId" value="${product.id}">
+    </div>
 
-				<label>Quantity:</label> <input type="number" name="quantity"
-					min="1" value="1">
+  </div>
+</div>
 
-				<button type="submit">Add To Cart</button>
-
-			</form>
-
-		</div>
-	</div>
-
-	<!-- Footer -->
-	<div class="sys-footer">ECOMMERCE ADMIN PANEL &bull;</div>
+<!-- Footer -->
+<div class="sys-footer">ECOMMERCE ADMIN PANEL &bull; ALL RIGHTS RESERVED</div>
 
 </body>
 </html>
