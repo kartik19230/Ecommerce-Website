@@ -14,10 +14,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
+@Table(name = "orders")
 public class Order {
 
 	@Id
@@ -113,6 +115,9 @@ public class Order {
 		this.items = items;
 	}
 	
-	
+	public void addItem(OrderItem item) {
+		items.add(item);
+		item.setOrder(this);
+	}
 	
 }
