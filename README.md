@@ -1,226 +1,286 @@
-# E-Commerce Backend Application
+# 🛒 JavaCart — E-Commerce Web Application
 
-## Overview
-
-A backend-focused E-Commerce web application built using Java Servlet, JSP, Hibernate ORM, and PostgreSQL following the MVC architecture pattern.
-
-The project focuses on mastering backend development concepts including authentication, session management, ORM relationships, pagination, validation architecture, and scalable query handling.
-
-Frontend is intentionally lightweight to prioritize backend engineering concepts.
+A backend-focused e-commerce platform built with **Java**, **Hibernate (JPA)**, **Servlets**, **JSP**, and **PostgreSQL**. This project demonstrates enterprise-grade backend development patterns including ORM, MVC architecture, session management, authentication, and role-based access control.
 
 ---
 
-# Tech Stack
+## 📋 Table of Contents
 
-* Java
-* Servlet
-* JSP
-* JSTL + EL
-* Hibernate ORM (JPA)
-* PostgreSQL
-* Maven
-* Apache Tomcat
-* Git & GitHub
-* BCrypt Password Hashing
-
----
-
-# Features
-
-## Authentication & Authorization
-
-* User Registration
-* Secure Login System
-* BCrypt Password Hashing
-* Session Management
-* Logout Functionality
-* Authentication Filter
-* Protected Routes
-* Cache Prevention After Logout
+- [Tech Stack](#tech-stack)
+- [Features](#features)
+- [Project Structure](#project-structure)
+- [Database Schema](#database-schema)
+- [Application Workflow](#application-workflow)
+- [Hibernate Concepts](#hibernate-concepts)
+- [Setup & Installation](#setup--installation)
+- [Upcoming Features](#upcoming-features)
+- [Learning Outcomes](#learning-outcomes)
 
 ---
 
-## Product Management
+## 🛠️ Tech Stack
 
-* Add Product
-* Update Product
-* Delete Product
-* Product Listing
-* Product Search
-* Product Pagination
-* Product Validation
-
----
-
-## Category Module
-
-* One-to-Many Relationship Mapping
-* Many-to-One Relationship Mapping
-* Category Assignment for Products
-* Dynamic Category Dropdown
+| Layer | Technology |
+|---|---|
+| Language | Java 17+ |
+| ORM | Hibernate 6.x (JPA) |
+| Web Layer | Java Servlets + JSP |
+| Templating | JSTL & Expression Language (EL) |
+| Database | PostgreSQL |
+| Build Tool | Maven |
+| Server | Apache Tomcat 10 |
+| Version Control | Git & GitHub |
 
 ---
 
-## Validation Layer
+## ✨ Features
 
-### User Validation
+### 🔐 Authentication Module
+- User registration with server-side form validation
+- Secure login with session-based authentication
+- Logout with session invalidation
+- Input sanitization and error feedback
 
-* Empty field checks
-* Email format validation
-* Password length validation
-* Duplicate email prevention
+### 📂 Category Management
+- Add and view product categories
+- Category-level validation (duplicate prevention planned)
+- Category-to-product mapping
 
-### Product Validation
+### 📦 Product Management
+- Add products with category association
+- View all products with category display
+- Server-side product validation
 
-* Product name validation
-* Description validation
-* Positive price validation
-* Non-negative stock validation
-* Safe numeric parsing
+### 🛒 Shopping Cart
+- Add products to cart
+- Increase / decrease item quantity
+- Remove individual items
+- Dynamic cart total calculation
+- Fully session-based (no DB persistence required)
+
+### 📑 Order Management
+
+**Checkout**
+- Converts active cart into a persisted order
+- Auto-generates `OrderItem` records via Hibernate cascading
+- Clears the cart after successful checkout
+
+**Order History**
+- Lists all past orders for the logged-in user
+- Displays order date, status, payment status, and total amount
+
+**Order Details**
+- Breakdown of all purchased products per order
+- Shows quantity, price at purchase time, subtotal per item, and grand total
+- Order ownership validation — users can only view their own orders
 
 ---
 
-## Pagination & Search
+## 📁 Project Structure
 
-* Dynamic Pagination
-* Search with Pagination
-* Total Page Calculation
-* Invalid Page Handling
-* JPQL LIKE Queries
-* Offset-based Pagination
+```
+src/main/java/
+│
+├── controller/                  # Servlet controllers (request handling)
+│   ├── LoginServlet.java
+│   ├── RegisterServlet.java
+│   ├── AddCategoryServlet.java
+│   ├── AddProductServlet.java
+│   ├── CartServlet.java
+│   ├── CheckoutServlet.java
+│   ├── OrdersServlet.java
+│   └── OrderDetailsServlet.java
+│
+├── dao/                         # Data Access Objects (DB operations)
+│   ├── UserDao.java
+│   ├── CategoryDao.java
+│   ├── ProductDao.java
+│   └── OrderDao.java
+│
+├── model/                       # Hibernate entity classes
+│   ├── Users.java
+│   ├── Category.java
+│   ├── Product.java
+│   ├── ShoppingCart.java
+│   ├── CartItem.java
+│   ├── Order.java
+│   ├── OrderItem.java
+│   ├── OrderStatus.java         # Enum: PENDING, PROCESSING, SHIPPED, DELIVERED
+│   └── PaymentStatus.java       # Enum: PENDING, PAID, FAILED
+│
+└── util/
+    └── HibernateUtil.java       # SessionFactory singleton
 
----
-
-# Architecture
-
-```text
-Browser
-   ↓
-Servlet Controller
-   ↓
-DAO Layer
-   ↓
-Hibernate ORM
-   ↓
-PostgreSQL
-   ↓
-Servlet
-   ↓
-JSP View (WEB-INF protected)
+src/main/webapp/
+├── WEB-INF/
+│   └── web.xml
+├── views/                       # JSP pages
+│   ├── login.jsp
+│   ├── register.jsp
+│   ├── products.jsp
+│   ├── cart.jsp
+│   ├── orders.jsp
+│   └── orderDetails.jsp
+└── css/
 ```
 
 ---
 
-# Hibernate Concepts Practiced
+## 🗄️ Database Schema
 
-* Entity Lifecycle
-* Persistence Context
-* Dirty Checking
-* JPQL
-* One-to-Many Mapping
-* Many-to-One Mapping
-* Foreign Keys
-* Owning Side vs Inverse Side
-* Transactions
-* Rollback Handling
-* Pagination using setFirstResult() and setMaxResults()
+### Entity Relationships
+
+```
+Users ──────────────────── Orders ──────────────────── OrderItems
+  │                          │                              │
+  │  1 : N                   │  1 : N                       │  N : 1
+  │                          │                              │
+  └─ One user places         └─ One order contains          └─ Each item
+     many orders                many order items               references
+                                                               one product
+                                                                    │
+                                                               Products
+```
+
+### Key Constraints
+- `Order.user_id` → FK to `Users`
+- `OrderItem.order_id` → FK to `Orders` (cascade delete)
+- `OrderItem.product_id` → FK to `Products`
+- Price is captured at purchase time in `OrderItem.price` (independent of current `Product.price`)
 
 ---
 
-# Authentication Flow
+## 🔄 Application Workflow
 
-```text
-login.jsp
-   ↓
-LoginServlet
-   ↓
-UserDao.login()
-   ↓
-BCrypt.checkpw()
-   ↓
-Session Creation
-   ↓
-DashboardServlet
+```
+[Register / Login]
+        │
+        ▼
+[Browse Products]
+        │
+        ▼
+[Add to Cart] ──► [Update Quantity] ──► [Remove Item]
+        │
+        ▼
+[View Cart & Review Total]
+        │
+        ▼
+[Checkout]
+        │
+        ├─ Create Order (persisted)
+        ├─ Create OrderItems (cascade)
+        └─ Clear Session Cart
+        │
+        ▼
+[Order History] ──► [Order Details]
 ```
 
 ---
 
-# Current Learning Focus
+## 🧩 Hibernate Concepts Implemented
 
-* Backend Architecture
-* Hibernate Internals
-* ORM Relationships
-* Validation Design
-* Request Lifecycle
-* Defensive Programming
-* Scalable Query Design
-* Debugging & Troubleshooting
-
----
-
-# Future Improvements
-
-* Admin Role Authorization
-* Product Details Page
-* Hibernate Second-Level Cache
-* Order Management
-* Shopping Cart
-* REST API Integration
-* Spring Framework Migration
+| Concept | Usage |
+|---|---|
+| `@OneToMany` | `User → Orders`, `Order → OrderItems` |
+| `@ManyToOne` | `OrderItem → Product`, `OrderItem → Order` |
+| `CascadeType.ALL` | Persisting `OrderItems` through `Order` |
+| `FetchType.LAZY` | Default lazy loading on collections |
+| JPQL Queries | Fetching orders by user, order details by ID |
+| Transaction Management | Manual begin/commit/rollback in DAOs |
+| Entity Lifecycle | Managed, detached, and removed states |
+| `SessionFactory` Singleton | Centralized via `HibernateUtil` |
 
 ---
 
-# Setup Instructions
+## ⚙️ Setup & Installation
 
-## Clone Repository
+### Prerequisites
+- Java 17+
+- Apache Tomcat 10
+- PostgreSQL 14+
+- Maven 3.8+
 
-```bash
-git clone <https://github.com/kartik19230/Ecommerce-Website>
-```
+### Steps
 
----
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/kartikshinde/javacart.git
+   cd javacart
+   ```
 
-## Configure Database
+2. **Configure the database**
 
-Create PostgreSQL database and update:
+   Create a PostgreSQL database and update `src/main/resources/hibernate.cfg.xml`:
+   ```xml
+   <property name="hibernate.connection.url">
+       jdbc:postgresql://localhost:5432/javacart_db
+   </property>
+   <property name="hibernate.connection.username">your_username</property>
+   <property name="hibernate.connection.password">your_password</property>
+   <property name="hibernate.hbm2ddl.auto">update</property>
+   ```
 
-```properties
-persistence.xml
-```
+3. **Build the project**
+   ```bash
+   mvn clean package
+   ```
 
-with your database credentials.
+4. **Deploy to Tomcat**
 
----
+   Copy the generated `.war` from `target/` into Tomcat's `webapps/` directory, then start Tomcat:
+   ```bash
+   $CATALINA_HOME/bin/startup.sh
+   ```
 
-## Build Project
+5. **Access the application**
 
-```bash
-mvn clean install
-```
-
----
-
-## Deploy
-
-Deploy generated WAR file to Apache Tomcat server.
-
----
-
-# Git Workflow
-
-Practiced:
-
-* Feature branch workflow
-* Rebase handling
-* Push conflict resolution
-* Git hygiene practices
-* .gitignore management
+   Open `http://localhost:8080/javacart` in your browser.
 
 ---
 
-# Author
+## 🚧 Upcoming Features
 
-Kartik Shinde
-<<<<<<< HEAD
+### Authorization & Filters
+- 1. `Filter` implementation for route protection
+- 2. Role-based access control (`ADMIN` / `CUSTOMER`)
+- 3. Admin-only route guards
+- 4. Customer-only route guards
 
-=======
+### Admin Panel
+- 1. View and manage all orders
+- 2. Update order status (`PENDING → PROCESSING → SHIPPED → DELIVERED`)
+- 3. Order processing workflow dashboard
+
+### Product Enhancements
+- 1. Duplicate product name validation
+- 2. Keyword-based product search
+- 3. Filter products by category
+- 4.  Product image upload
+
+---
+
+## 📚 Learning Outcomes
+
+This project provides hands-on practice with:
+
+- **Java Backend Development** — Servlet lifecycle, request/response handling
+- **Hibernate ORM** — Mappings, transactions, JPQL, cascading
+- **MVC Architecture** — Clean separation of Servlets (C), JSP (V), and entities/DAOs (M)
+- **Session Management** — Cart persistence across requests without a database
+- **Authentication** — Password handling, session creation, and invalidation
+- **Security** — Server-side ownership validation to prevent unauthorized data access
+- **Relational Database Design** — Normalized schema with FK constraints
+- **Enterprise Patterns** — DAO pattern, Singleton (`HibernateUtil`), layered architecture
+
+---
+
+## 👨‍💻 Author
+
+**Kartik Shinde**  
+Backend-Focused Java Developer  
+
+![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=white) &nbsp; **[Visit GitHub Profile](https://github.com/kartik19230)**
+
+---
+
+> ⭐ If you found this project useful or learned something from it, consider giving it a star on GitHub!
