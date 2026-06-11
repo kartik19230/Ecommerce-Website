@@ -457,7 +457,8 @@ opacity
 		<div class="topbar-actions">
 			<a href="add-product" class="topbar-btn add">+ Add Product</a> <a
 				href="logout" class="topbar-btn logout">Logout &rarr;</a> <a
-				href="cart" class="topbar-btn"> Cart </a>
+				href="cart" class="topbar-btn"> Cart </a><a
+				href="orders" class="topbar-btn">My Orders</a>
 		</div>
 
 	</div>
