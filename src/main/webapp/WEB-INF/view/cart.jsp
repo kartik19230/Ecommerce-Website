@@ -93,6 +93,7 @@ body {
 			<h1>Shopping Cart</h1>
 
 			<a href="dashboard" class="btn"> Continue Shopping </a>
+			<a href="checkout" class="btn"> Checkout </a>
 		</div>
 
 		<c:choose>

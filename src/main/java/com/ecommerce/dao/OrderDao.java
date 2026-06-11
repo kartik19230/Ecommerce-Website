@@ -1,5 +1,6 @@
 package com.ecommerce.dao;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -73,7 +74,9 @@ public class OrderDao {
 		try {
 			 em = HibernateUtil.getEMF().createEntityManager();
 			 
-			String hql = "SELECT o from Orders o Where o.user_id =: id";
+			String hql ="SELECT o FROM Order o " +
+						"WHERE o.user.id = :id " +
+				    	 "ORDER BY o.orderDate DESC";;
 			
 			TypedQuery<Order> query = em.createQuery(hql,Order.class);
 			
@@ -89,6 +92,6 @@ public class OrderDao {
 			}
 		}
 		
-		return null;
+		return Collections.emptyList();
 	}
 }

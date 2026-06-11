@@ -1,6 +1,7 @@
 package com.ecommerce.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -45,7 +46,7 @@ public class Order {
 			cascade = CascadeType.ALL,
 			orphanRemoval = true
 			)
-	private List<OrderItem> items;
+	private List<OrderItem> items = new ArrayList<>();
 	
 	public Order() {}
 
@@ -56,7 +57,7 @@ public class Order {
 		this.totalAmount = totalAmount;
 		this.status = status;
 		this.paymentStatus = paymentStatus;
-		this.items = items;
+		this.items = (items != null) ? items : new ArrayList<>();
 	}
 
 	public Long getId() {
@@ -116,6 +117,7 @@ public class Order {
 	}
 	
 	public void addItem(OrderItem item) {
+	
 		items.add(item);
 		item.setOrder(this);
 	}
