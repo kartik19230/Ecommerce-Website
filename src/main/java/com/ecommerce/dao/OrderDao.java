@@ -48,23 +48,33 @@ public class OrderDao {
 	}
 	
 	public Order findById(Long id) {
-		
-		EntityManager em = null;
-		
-		try {
-			
-			em = HibernateUtil.getEMF().createEntityManager();
-			
-			return em.find(Order.class, id);
-		}catch (Exception e) {
-			e.printStackTrace();
-		}finally {
-			if (em != null && em.isOpen()) {
-				em.close();
-			}
-		}
-		
-		return null;
+
+	    EntityManager em = null;
+
+	    try {
+
+	        em = HibernateUtil.getEMF().createEntityManager();
+
+	        String jpql =
+	                "SELECT DISTINCT o " +
+	                "FROM Order o " +
+	                "LEFT JOIN FETCH o.items i " +
+	                "LEFT JOIN FETCH i.product " +
+	                "WHERE o.id = :id";
+
+	        return em.createQuery(jpql, Order.class)
+	                 .setParameter("id", id)
+	                 .getSingleResult();
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        if (em != null && em.isOpen()) {
+	            em.close();
+	        }
+	    }
+
+	    return null;
 	}
 	
 	public List<Order> findOrdersByUser(int userId) {
