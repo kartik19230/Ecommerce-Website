@@ -11,8 +11,6 @@ A backend-focused e-commerce platform built with **Java**, **Hibernate (JPA)**, 
 - [Project Structure](#project-structure)
 - [Database Schema](#database-schema)
 - [Application Workflow](#application-workflow)
-- [Hibernate Concepts](#hibernate-concepts)
-- [Setup & Installation](#setup--installation)
 - [Upcoming Features](#upcoming-features)
 - [Learning Outcomes](#learning-outcomes)
 

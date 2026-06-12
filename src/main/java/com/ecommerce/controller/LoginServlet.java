@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.ecommerce.dao.UserDao;
+import com.ecommerce.model.Role;
 import com.ecommerce.model.Users;
 
 @WebServlet("/login")
@@ -30,7 +31,11 @@ public class LoginServlet extends HttpServlet{
 				HttpSession session = req.getSession();
 				session.setAttribute("user", user);
 				
-				resp.sendRedirect("dashboard");
+				if (user.getRole() == Role.ADMIN) {
+					resp.sendRedirect("home");
+				}else {
+					resp.sendRedirect("dashboard");
+				}
 			}else {
 				
 				resp.getWriter().print("Invalid Email or Password");

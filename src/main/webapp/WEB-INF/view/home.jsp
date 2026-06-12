@@ -444,7 +444,7 @@ opacity
 	<!-- ── Top Navigation Bar ───────────────────────── -->
 	<div class="topbar">
 
-		<a href="dashboard" class="topbar-logo"> Shop<span>Admin</span><small>panel</small>
+		<a href="home" class="topbar-logo"> Shop<span>Admin</span><small>panel</small>
 		</a>
 
 		<form class="search-wrap" action="dashboard" method="get">
@@ -454,10 +454,9 @@ opacity
 			<button type="submit">&#128269;</button>
 		</form>
 
-		<div class="topbar-actions"><a
-				href="logout" class="topbar-btn logout">Logout &rarr;</a> <a
-				href="cart" class="topbar-btn"> Cart </a><a
-				href="orders" class="topbar-btn">My Orders</a>
+		<div class="topbar-actions">
+			<a href="add-product" class="topbar-btn add">+ Add Product</a> <a
+				href="logout" class="topbar-btn logout">Logout &rarr;</a>
 		</div>
 
 	</div>
@@ -480,7 +479,7 @@ opacity
 		</div>
 
 		<div class="stat-item">
-			<div class="stat-num" style="color: #ff9f00">Customer</div>
+			<div class="stat-num" style="color: #ff9f00">Admin</div>
 			<div class="stat-lbl">
 				Active<br>Session
 			</div>
@@ -539,7 +538,12 @@ opacity
 							<div class="p-card-price">&#8377;${product.price}</div>
 							<div class="p-card-stock">In Stock: ${product.stock} units</div>
 
-							
+							<div class="p-card-actions">
+								<a href="editProduct?id=${product.id}" class="btn-edit"
+									onclick="event.stopPropagation()"> Edit </a> <a
+									href="deleteProduct?id=${product.id}" class="btn-del"
+									onclick="event.stopPropagation()"> Delete </a>
+							</div>
 						</div>
 					</c:forEach>
 				</c:otherwise>

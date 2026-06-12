@@ -210,15 +210,15 @@ pageEncoding="UTF-8"%>
 
 <!-- Top Nav -->
 <div class="topbar">
-  <a href="dashboard" class="topbar-logo">Shop<span>Admin</span></a>
-  <a href="dashboard" class="topbar-back">&larr; Back to Dashboard</a>
+  <a href="home" class="topbar-logo">Shop<span>Admin</span></a>
+  <a href="home" class="topbar-back">&larr; Back to Dashboard</a>
 </div>
 
 <!-- Page Content -->
 <div class="page-wrap">
 
   <div class="breadcrumb">
-    <a href="dashboard">Dashboard</a> &rsaquo; Add Product
+    <a href="home">Dashboard</a> &rsaquo; Add Product
   </div>
 
   <div class="container">

@@ -328,19 +328,19 @@ pageEncoding="UTF-8"%>
         <div class="info-label">Order Status</div>
         <div class="info-value">
           <c:choose>
-            <c:when test="${order.status == 'PENDING'}">
+            <c:when test="${order.status.toString() eq 'PENDING'}">
               <span class="badge badge-pending">Pending</span>
             </c:when>
-            <c:when test="${order.status == 'PROCESSING'}">
+            <c:when test="${order.status.toString() eq 'PROCESSING'}">
               <span class="badge badge-processing">Processing</span>
             </c:when>
-            <c:when test="${order.status == 'SHIPPED'}">
+            <c:when test="${order.status.toString() eq 'SHIPPED'}">
               <span class="badge badge-shipped">Shipped</span>
             </c:when>
-            <c:when test="${order.status == 'DELIVERED'}">
+            <c:when test="${order.status.toString() eq 'DELIVERED'}">
               <span class="badge badge-delivered">Delivered</span>
             </c:when>
-            <c:when test="${order.status == 'CANCELLED'}">
+            <c:when test="${order.status.toString() eq 'CANCELLED'}">
               <span class="badge badge-cancelled">Cancelled</span>
             </c:when>
             <c:otherwise>
@@ -354,10 +354,10 @@ pageEncoding="UTF-8"%>
         <div class="info-label">Payment Status</div>
         <div class="info-value">
           <c:choose>
-            <c:when test="${order.paymentStatus == 'PAID'}">
+            <c:when test="${order.paymentStatus.toString() eq 'PAID'}">
               <span class="badge badge-paid">Paid</span>
             </c:when>
-            <c:when test="${order.paymentStatus == 'UNPAID'}">
+            <c:when test="${order.paymentStatus.toString() eq 'UNPAID'}">
               <span class="badge badge-unpaid">Unpaid</span>
             </c:when>
             <c:otherwise>

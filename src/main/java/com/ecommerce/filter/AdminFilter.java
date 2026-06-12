@@ -12,42 +12,43 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.ecommerce.model.Role;
+import com.ecommerce.model.Users;
+
 @WebFilter({
-    "/dashboard",
-    "/home",
-    "/cart",
-    "/checkout",
-    "/orders",
-    "/order-details",
-    "/add-product",
-    "/addProduct",
-    "/editProduct",
-    "/updateProduct",
-    "/deleteProduct",
-    "/addCategory"
+	"/home",
+	"/add-product",
+	"/addProduct",
+	"/deleteProduct",
+	"/editProduct",
+	"/updateProduct",
+	"/addCategory"
 })
-public class AuthFilter implements Filter{
+public class AdminFilter implements Filter{
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-
+		
 		HttpServletRequest req = (HttpServletRequest) request;
-		HttpServletResponse res = (HttpServletResponse) response;
 		
 		HttpSession session = req.getSession(false);
 		
-		System.out.println("Auth Filter executed");
-		
-		if(session != null && session.getAttribute("user") != null) {
-			
-			chain.doFilter(request, response);
-		}else {
-			
-			res.sendRedirect("login.jsp");
+		if(session == null) {
+		    ((HttpServletResponse)response)
+		        .sendRedirect("login.jsp");
+		    return;
 		}
 		
+		Users user = (Users) session.getAttribute("user");
+		
+		if (user.getRole() == Role.ADMIN) {
+			chain.doFilter(request, response);
+		}else {
+			HttpServletResponse resp = (HttpServletResponse) response;
+			
+			resp.sendRedirect("access-denied.jsp");
+		}
 	}
 
-	
 }

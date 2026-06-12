@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html>
 <html>
@@ -460,36 +461,60 @@ pageEncoding="UTF-8"%>
       <hr class="side-divider">
 
       <!-- Cart Form -->
-      <div class="cart-form-block">
-        <div class="cart-form-title">Add to Cart</div>
-        <form action="add-to-cart" method="post">
-          <input type="hidden" name="productId" value="${product.id}">
-          <div class="qty-row">
-            <label>Quantity:</label>
-            <div class="qty-control">
-              <button type="button" class="qty-btn"
-                onclick="var i=document.getElementById('qty-input');if(parseInt(i.value)>1)i.value=parseInt(i.value)-1">
-                &#8722;
-              </button>
-              <input id="qty-input" class="qty-input"
-                type="number" name="quantity" min="1" value="1">
-              <button type="button" class="qty-btn"
-                onclick="var i=document.getElementById('qty-input');i.value=parseInt(i.value)+1">
-                &#43;
-              </button>
-            </div>
-          </div>
-          <button type="submit" class="btn-cart">&#128722; Add to Cart</button>
-        </form>
-      </div>
+				<div class="cart-form-block">
+					<div class="cart-form-title">Add to Cart</div>
+					<c:choose>
+						<%-- CUSTOMER VIEW --%>
+						<c:when test="${sessionScope.user.role == 'CUSTOMER'}">
 
-      <a href="editProduct?id=${product.id}" class="btn-primary">&#9998; Edit Product</a>
-      <a href="dashboard" class="btn-secondary">&larr; Back to Dashboard</a>
+							<form action="add-to-cart" method="post">
 
-    </div>
+								<input type="hidden" name="productId" value="${product.id}">
 
-  </div>
-</div>
+								<div class="qty-row">
+									<label>Quantity:</label>
+
+									<div class="qty-control">
+
+										<button type="button" class="qty-btn"
+											onclick="var i=document.getElementById('qty-input');if(parseInt(i.value)>1)i.value=parseInt(i.value)-1">
+											&#8722;</button>
+
+										<input id="qty-input" class="qty-input" type="number"
+											name="quantity" min="1" value="1">
+
+										<button type="button" class="qty-btn"
+											onclick="var i=document.getElementById('qty-input');i.value=parseInt(i.value)+1">
+											&#43;</button>
+
+									</div>
+								</div>
+
+								<button type="submit" class="btn-cart">&#128722; Add to
+									Cart</button>
+
+							</form>
+
+							<a href="dashboard" class="btn-secondary"> &larr; Back to
+								Dashboard </a>
+
+						</c:when>
+
+						<%-- ADMIN VIEW --%>
+						<c:otherwise>
+
+							<a href="editProduct?id=${product.id}" class="btn-primary">
+								&#9998; Edit Product </a>
+
+							<a href="home" class="btn-secondary"> &larr; Back to Admin
+								Home </a>
+
+						</c:otherwise>
+
+					</c:choose>
+
+				</div>
+			</div>
 
 <!-- Footer -->
 <div class="sys-footer">ECOMMERCE ADMIN PANEL &bull; ALL RIGHTS RESERVED</div>

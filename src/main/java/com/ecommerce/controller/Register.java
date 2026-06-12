@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.mindrot.jbcrypt.BCrypt;
 
 import com.ecommerce.dao.UserDao;
+import com.ecommerce.model.Role;
 import com.ecommerce.model.Users;
 import com.ecommerce.validator.UserValidation;
 
@@ -53,6 +54,7 @@ public class Register extends HttpServlet{
 		String hashed = BCrypt.hashpw(password, BCrypt.gensalt(12));
 		
 		Users user = new Users(name,email,hashed);
+		user.setRole(Role.CUSTOMER);
 		
 		
 		Users savedUser = dao.saveUser(user);
