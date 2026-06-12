@@ -1,284 +1,409 @@
-# 🛒 JavaCart — E-Commerce Web Application
+# 🛒 JavaCart — E-Commerce Web Application (Version 1.0)
 
-A backend-focused e-commerce platform built with **Java**, **Hibernate (JPA)**, **Servlets**, **JSP**, and **PostgreSQL**. This project demonstrates enterprise-grade backend development patterns including ORM, MVC architecture, session management, authentication, and role-based access control.
+A backend-focused e-commerce platform built with **Java**, **Hibernate (JPA)**, **Servlets**, **JSP**, and **PostgreSQL**.
 
----
-
-## 📋 Table of Contents
-
-- [Tech Stack](#tech-stack)
-- [Features](#features)
-- [Project Structure](#project-structure)
-- [Database Schema](#database-schema)
-- [Application Workflow](#application-workflow)
-- [Upcoming Features](#upcoming-features)
-- [Learning Outcomes](#learning-outcomes)
+This project demonstrates enterprise-grade backend development concepts including ORM, MVC architecture, authentication, authorization, session management, shopping cart functionality, order processing, and role-based access control (RBAC).
 
 ---
 
-## 🛠️ Tech Stack
+# 📋 Table of Contents
 
-| Layer | Technology |
-|---|---|
-| Language | Java 17+ |
-| ORM | Hibernate 6.x (JPA) |
-| Web Layer | Java Servlets + JSP |
-| Templating | JSTL & Expression Language (EL) |
-| Database | PostgreSQL |
-| Build Tool | Maven |
-| Server | Apache Tomcat 10 |
-| Version Control | Git & GitHub |
-
----
-
-## ✨ Features
-
-### 🔐 Authentication Module
-- User registration with server-side form validation
-- Secure login with session-based authentication
-- Logout with session invalidation
-- Input sanitization and error feedback
-
-### 📂 Category Management
-- Add and view product categories
-- Category-level validation (duplicate prevention planned)
-- Category-to-product mapping
-
-### 📦 Product Management
-- Add products with category association
-- View all products with category display
-- Server-side product validation
-
-### 🛒 Shopping Cart
-- Add products to cart
-- Increase / decrease item quantity
-- Remove individual items
-- Dynamic cart total calculation
-- Fully session-based (no DB persistence required)
-
-### 📑 Order Management
-
-**Checkout**
-- Converts active cart into a persisted order
-- Auto-generates `OrderItem` records via Hibernate cascading
-- Clears the cart after successful checkout
-
-**Order History**
-- Lists all past orders for the logged-in user
-- Displays order date, status, payment status, and total amount
-
-**Order Details**
-- Breakdown of all purchased products per order
-- Shows quantity, price at purchase time, subtotal per item, and grand total
-- Order ownership validation — users can only view their own orders
+* Tech Stack
+* Features
+* Authentication & Authorization Flow
+* Project Structure
+* Database Schema
+* Application Workflow
+* Hibernate Concepts Implemented
+* Setup & Installation
+* Future Enhancements
+* Learning Outcomes
 
 ---
 
-## 📁 Project Structure
+# 🛠️ Tech Stack
 
+| Layer           | Technology                      |
+| --------------- | ------------------------------- |
+| Language        | Java 17+                        |
+| ORM             | Hibernate 6.x (JPA)             |
+| Web Layer       | Java Servlets + JSP             |
+| View Technology | JSTL & Expression Language (EL) |
+| Database        | PostgreSQL                      |
+| Build Tool      | Maven                           |
+| Server          | Apache Tomcat 10                |
+| Security        | BCrypt Password Hashing         |
+| Version Control | Git & GitHub                    |
+
+---
+
+# ✨ Features
+
+## 🔐 Authentication Module
+
+* User registration with server-side validation
+* Secure login using BCrypt password hashing
+* Session-based authentication
+* Logout with session invalidation
+* Form validation and error handling
+
+---
+
+## 🔑 Role-Based Authorization (RBAC)
+
+* ADMIN and CUSTOMER roles
+* Role-based login redirection
+* Servlet Filter-based route protection
+* Admin-only access to product and category management
+* Customer-only access to cart, checkout and order history
+* Access denied page for unauthorized access attempts
+* Role-aware UI rendering using JSTL
+
+---
+
+## 📂 Category Management
+
+* Add categories
+* View categories
+* Category validation
+* Product-category association
+
+---
+
+## 📦 Product Management
+
+* Add products
+* Edit products
+* Delete products
+* View product details
+* Product search by keyword
+* Server-side pagination
+* Category association
+* Product validation
+
+---
+
+## 🛒 Shopping Cart
+
+* Add products to cart
+* Increase quantity
+* Decrease quantity
+* Remove products
+* Dynamic total calculation
+* Session-based cart persistence
+
+---
+
+## 📑 Order Management
+
+### Checkout
+
+* Converts active cart into a persisted order
+* Creates OrderItems automatically
+* Hibernate cascading persistence
+* Clears cart after successful checkout
+
+### Order History
+
+* Displays all orders of the logged-in user
+* Shows status, payment status and order amount
+* Sorted by purchase date
+
+### Order Details
+
+* Product-level breakdown
+* Quantity purchased
+* Purchase-time pricing
+* Item subtotals
+* Grand total calculation
+* Order ownership validation
+
+---
+
+## 🛡️ Security
+
+* BCrypt password hashing
+* Session-based authentication
+* Servlet Filter route protection
+* Role-based authorization (RBAC)
+* Order ownership validation
+* Access denied handling
+* Server-side validation
+
+---
+
+# 🔐 Authentication & Authorization Flow
+
+```text
+Guest
+│
+├── Register
+├── Login
+│
+▼
+Authenticated User
+│
+├── ADMIN
+│   ├── Home
+│   ├── Add Product
+│   ├── Edit Product
+│   ├── Delete Product
+│   └── Category Management
+│
+└── CUSTOMER
+    ├── Dashboard
+    ├── Product Details
+    ├── Cart
+    ├── Checkout
+    ├── Orders
+    └── Order Details
 ```
+
+---
+
+# 📁 Project Structure
+
+```text
 src/main/java/
 │
-├── controller/                  # Servlet controllers (request handling)
+├── controller/
 │   ├── LoginServlet.java
 │   ├── RegisterServlet.java
+│   ├── DashboardServlet.java
+│   ├── HomeServlet.java
 │   ├── AddCategoryServlet.java
 │   ├── AddProductServlet.java
+│   ├── EditProductServlet.java
+│   ├── UpdateProductServlet.java
+│   ├── DeleteProductServlet.java
 │   ├── CartServlet.java
 │   ├── CheckoutServlet.java
 │   ├── OrdersServlet.java
 │   └── OrderDetailsServlet.java
 │
-├── dao/                         # Data Access Objects (DB operations)
+├── dao/
 │   ├── UserDao.java
 │   ├── CategoryDao.java
 │   ├── ProductDao.java
 │   └── OrderDao.java
 │
-├── model/                       # Hibernate entity classes
+├── filter/
+│   ├── AuthFilter.java
+│   ├── AdminFilter.java
+│   └── CustomerFilter.java
+│
+├── model/
 │   ├── Users.java
+│   ├── Role.java
 │   ├── Category.java
 │   ├── Product.java
 │   ├── ShoppingCart.java
 │   ├── CartItem.java
 │   ├── Order.java
 │   ├── OrderItem.java
-│   ├── OrderStatus.java         # Enum: PENDING, PROCESSING, SHIPPED, DELIVERED
-│   └── PaymentStatus.java       # Enum: PENDING, PAID, FAILED
+│   ├── OrderStatus.java
+│   └── PaymentStatus.java
 │
 └── util/
-    └── HibernateUtil.java       # SessionFactory singleton
-
-src/main/webapp/
-├── WEB-INF/
-│   └── web.xml
-├── views/                       # JSP pages
-│   ├── login.jsp
-│   ├── register.jsp
-│   ├── products.jsp
-│   ├── cart.jsp
-│   ├── orders.jsp
-│   └── orderDetails.jsp
-└── css/
+    └── HibernateUtil.java
 ```
 
 ---
 
-## 🗄️ Database Schema
+# 🗄️ Database Schema
 
-### Entity Relationships
+## Entity Relationships
 
-```
-Users ──────────────────── Orders ──────────────────── OrderItems
-  │                          │                              │
-  │  1 : N                   │  1 : N                       │  N : 1
-  │                          │                              │
-  └─ One user places         └─ One order contains          └─ Each item
-     many orders                many order items               references
-                                                               one product
-                                                                    │
-                                                               Products
-```
+```text
+Users
+ │
+ │ 1 : N
+ ▼
+Orders
+ │
+ │ 1 : N
+ ▼
+OrderItems
+ │
+ │ N : 1
+ ▼
+Products
 
-### Key Constraints
-- `Order.user_id` → FK to `Users`
-- `OrderItem.order_id` → FK to `Orders` (cascade delete)
-- `OrderItem.product_id` → FK to `Products`
-- Price is captured at purchase time in `OrderItem.price` (independent of current `Product.price`)
-
----
-
-## 🔄 Application Workflow
-
-```
-[Register / Login]
-        │
-        ▼
-[Browse Products]
-        │
-        ▼
-[Add to Cart] ──► [Update Quantity] ──► [Remove Item]
-        │
-        ▼
-[View Cart & Review Total]
-        │
-        ▼
-[Checkout]
-        │
-        ├─ Create Order (persisted)
-        ├─ Create OrderItems (cascade)
-        └─ Clear Session Cart
-        │
-        ▼
-[Order History] ──► [Order Details]
+Category
+ │
+ │ 1 : N
+ ▼
+Products
 ```
 
----
+## Key Constraints
 
-## 🧩 Hibernate Concepts Implemented
-
-| Concept | Usage |
-|---|---|
-| `@OneToMany` | `User → Orders`, `Order → OrderItems` |
-| `@ManyToOne` | `OrderItem → Product`, `OrderItem → Order` |
-| `CascadeType.ALL` | Persisting `OrderItems` through `Order` |
-| `FetchType.LAZY` | Default lazy loading on collections |
-| JPQL Queries | Fetching orders by user, order details by ID |
-| Transaction Management | Manual begin/commit/rollback in DAOs |
-| Entity Lifecycle | Managed, detached, and removed states |
-| `SessionFactory` Singleton | Centralized via `HibernateUtil` |
+* Users can place multiple orders
+* Orders can contain multiple OrderItems
+* Each OrderItem references a Product
+* Product belongs to a Category
+* Order ownership validation enforced
+* Purchase-time price stored in OrderItem
 
 ---
 
-## ⚙️ Setup & Installation
+# 🔄 Application Workflow
 
-### Prerequisites
-- Java 17+
-- Apache Tomcat 10
-- PostgreSQL 14+
-- Maven 3.8+
-
-### Steps
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/kartikshinde/javacart.git
-   cd javacart
-   ```
-
-2. **Configure the database**
-
-   Create a PostgreSQL database and update `src/main/resources/hibernate.cfg.xml`:
-   ```xml
-   <property name="hibernate.connection.url">
-       jdbc:postgresql://localhost:5432/javacart_db
-   </property>
-   <property name="hibernate.connection.username">your_username</property>
-   <property name="hibernate.connection.password">your_password</property>
-   <property name="hibernate.hbm2ddl.auto">update</property>
-   ```
-
-3. **Build the project**
-   ```bash
-   mvn clean package
-   ```
-
-4. **Deploy to Tomcat**
-
-   Copy the generated `.war` from `target/` into Tomcat's `webapps/` directory, then start Tomcat:
-   ```bash
-   $CATALINA_HOME/bin/startup.sh
-   ```
-
-5. **Access the application**
-
-   Open `http://localhost:8080/javacart` in your browser.
+```text
+Register / Login
+        │
+        ▼
+Browse Products
+        │
+        ▼
+View Product Details
+        │
+        ▼
+Add To Cart
+        │
+        ▼
+Manage Cart
+        │
+        ▼
+Checkout
+        │
+        ├── Create Order
+        ├── Create OrderItems
+        └── Clear Cart
+        │
+        ▼
+Order History
+        │
+        ▼
+Order Details
+```
 
 ---
 
-## 🚧 Upcoming Features
+# 🧩 Hibernate Concepts Implemented
 
-### Authorization & Filters
-- 1. `Filter` implementation for route protection
-- 2. Role-based access control (`ADMIN` / `CUSTOMER`)
-- 3. Admin-only route guards
-- 4. Customer-only route guards
-
-### Admin Panel
-- 1. View and manage all orders
-- 2. Update order status (`PENDING → PROCESSING → SHIPPED → DELIVERED`)
-- 3. Order processing workflow dashboard
-
-### Product Enhancements
-- 1. Duplicate product name validation
-- 2. Keyword-based product search
-- 3. Filter products by category
-- 4.  Product image upload
+| Concept                  | Usage                            |
+| ------------------------ | -------------------------------- |
+| @OneToMany               | User → Orders                    |
+| @OneToMany               | Order → OrderItems               |
+| @ManyToOne               | Product → Category               |
+| @ManyToOne               | OrderItem → Product              |
+| @ManyToOne               | OrderItem → Order                |
+| CascadeType.ALL          | Order → OrderItems               |
+| FetchType.LAZY           | Collection loading               |
+| JPQL Queries             | Search and order retrieval       |
+| Transaction Management   | Begin / Commit / Rollback        |
+| SessionFactory Singleton | HibernateUtil                    |
+| Enum Mapping             | Role, OrderStatus, PaymentStatus |
 
 ---
 
-## 📚 Learning Outcomes
+# ⚙️ Setup & Installation
 
-This project provides hands-on practice with:
+## Prerequisites
 
-- **Java Backend Development** — Servlet lifecycle, request/response handling
-- **Hibernate ORM** — Mappings, transactions, JPQL, cascading
-- **MVC Architecture** — Clean separation of Servlets (C), JSP (V), and entities/DAOs (M)
-- **Session Management** — Cart persistence across requests without a database
-- **Authentication** — Password handling, session creation, and invalidation
-- **Security** — Server-side ownership validation to prevent unauthorized data access
-- **Relational Database Design** — Normalized schema with FK constraints
-- **Enterprise Patterns** — DAO pattern, Singleton (`HibernateUtil`), layered architecture
+* Java 17+
+* PostgreSQL 14+
+* Apache Tomcat 10
+* Maven 3.8+
+
+## Clone Repository
+
+```bash
+git clone https://github.com/kartik19230/JavaCart.git
+cd JavaCart
+```
+
+## Configure Database
+
+Update:
+
+```text
+src/main/resources/hibernate.cfg.xml
+```
+
+with your PostgreSQL credentials.
+
+## Build Project
+
+```bash
+mvn clean package
+```
+
+## Deploy
+
+Copy generated WAR file into Tomcat webapps directory.
+
+Start Tomcat:
+
+```bash
+startup.bat
+```
+
+or
+
+```bash
+startup.sh
+```
+
+## Run Application
+
+```text
+http://localhost:8080/JavaCart
+```
 
 ---
 
-## 👨‍💻 Author
+# 🚀 Future Enhancements
 
-**Kartik Shinde**  
-Backend-Focused Java Developer  
-
-![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=white) &nbsp; **[Visit GitHub Profile](https://github.com/kartik19230)**
+* Admin Order Management
+* Order Status Tracking
+* Customer Profile Management
+* Product Image Upload
+* Email Verification
+* Wishlist Functionality
+* Payment Gateway Integration
+* Spring Boot Migration
+* REST API Version
 
 ---
 
-> ⭐ If you found this project useful or learned something from it, consider giving it a star on GitHub!
+# 📚 Learning Outcomes
+
+This project provided hands-on experience with:
+
+* Core Java
+* Object-Oriented Programming
+* Collections Framework
+* Servlets & JSP
+* MVC Architecture
+* Hibernate ORM
+* PostgreSQL
+* Session Management
+* Authentication
+* Authorization
+* Role-Based Access Control (RBAC)
+* Servlet Filters
+* BCrypt Password Hashing
+* Search & Pagination
+* Shopping Cart Design
+* Order Processing Systems
+* DAO Pattern
+* Singleton Pattern
+* Database Design
+* Git & GitHub Workflow
+
+---
+
+# 👨‍💻 Author
+
+**Kartik Shinde**
+
+Backend-Focused Java Developer
+
+GitHub:
+https://github.com/kartik19230
+
+---
+
+⭐ Version 1.0 Release — Completed as a backend-focused Java E-Commerce application before transitioning to Spring Framework and Spring Boot development.
